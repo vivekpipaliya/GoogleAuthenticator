@@ -1,8 +1,8 @@
 {
-    "name": "google/authenticator",
+    "name": "sonata-project/google-authenticator",
     "description": "Library to integrate Google Authenticator into a PHP project",
     "keywords": ["google authenticator"],
-    "homepage": "https://github.com/rande/GoogleAuthenticator.php",
+    "homepage": "https://github.com/sonata-project/GoogleAuthenticator",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -25,7 +25,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Exporter": "lib/"
+            "Google\\Authenticator": "lib/"
         }
     }
 }
