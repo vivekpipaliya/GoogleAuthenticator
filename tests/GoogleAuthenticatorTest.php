@@ -1,6 +1,6 @@
 <?php
 
-namespace Google\Test\Authenticator;
+namespace Google\Authenticator\Tests;
 
 use Google\Authenticator\GoogleAuthenticator;
 
