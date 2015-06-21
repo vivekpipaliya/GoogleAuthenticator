@@ -1,9 +1,9 @@
 <?php
 ob_start(); //i'm too lazy to check when is sent what ;)
 //set session cookie to be read only via http and not by JavaScript
-ini_set("session.cookie_httponly", 1);
+ini_set('session.cookie_httponly', 1);
 
-include_once(__DIR__."/../../lib/Google/Authenticator/GoogleAuthenticator.php");
+include_once __DIR__.'/../../lib/Google/Authenticator/GoogleAuthenticator.php';
 include_once 'Users.php';
 
 ?>
@@ -26,15 +26,15 @@ if ($username = $users->hasSession()) {
     //if he clicked logout, destroy the session and redirect to the startscreen.
     if (isset($_GET['logout'])) {
         session_destroy();
-        header("Location: ./");
+        header('Location: ./');
     }
     // check if the user is logged in.
     if ($user->isLoggedIn()) {
-        include(__DIR__."/../tmpl/loggedin.php");
+        include __DIR__.'/../tmpl/loggedin.php';
         //show the QR code if whished so
         if (isset($_GET['showqr'])) {
             $secret = $user->getSecret();
-            include(__DIR__."/../tmpl/show-qr.php");
+            include __DIR__.'/../tmpl/show-qr.php';
         }
     }
         //if the user is in the OTP phase and submit the OTP.
@@ -49,19 +49,18 @@ if ($username = $users->hasSession()) {
                 if (isset($_POST['remember']) && $_POST['remember']) {
                     $user->setOTPCookie();
                 }
-                include(__DIR__."/../tmpl/loggedin.php");
+                include __DIR__.'/../tmpl/loggedin.php';
             }
                 //if the OTP is wrong, destroy the session and tell the user to try again
             else {
                 session_destroy();
-                include(__DIR__."/../tmpl/login-error.php");
+                include __DIR__.'/../tmpl/login-error.php';
             }
-
         }
             // if the user is neither logged in nor in the OTP phase, show the login form
         else {
             session_destroy();
-            include(__DIR__."/../tmpl/login.php");
+            include __DIR__.'/../tmpl/login.php';
         }
     }
     die();
@@ -78,28 +77,27 @@ else {
                 //check if the user has a valid OTP cookie, so we don't have to
                 // ask for the current token and can directly log in
                 if ($user->hasValidOTPCookie()) {
-                    include(__DIR__."/../tmpl/loggedin.php");
+                    include __DIR__.'/../tmpl/loggedin.php';
                     $user->doLogin();
                 }
                     // try to get the users' secret from the db,
                     //  if he doesn't have one, generate one, store it and show it.
                 else {
                     if (!$user->getSecret()) {
-                        include(__DIR__."/../tmpl/loggedin.php");
+                        include __DIR__.'/../tmpl/loggedin.php';
 
                         $secret = $user->generateSecret();
                         $users->storeData($user);
                         $user->doLogin();
-                        include(__DIR__."/../tmpl/show-qr.php");
+                        include __DIR__.'/../tmpl/show-qr.php';
                     }
                         // if the user neither has a valid OTP cookie nor it's the first login
                         //  ask for the OTP
                     else {
                         $user->doOTP();
-                        include(__DIR__."/../tmpl/ask-for-otp.php");
+                        include __DIR__.'/../tmpl/ask-for-otp.php';
                     }
                 }
-
 
                 die();
             }
@@ -107,12 +105,12 @@ else {
         // if we're here, something went wrong, destroy the session and show a login error
         session_destroy();
 
-        include(__DIR__."/../tmpl/login-error.php");
+        include __DIR__.'/../tmpl/login-error.php';
         die();
     }
 }
 // if neither a session nor tried to submit the login credentials -> login screen
-include(__DIR__."/../tmpl/login.php");
+include __DIR__.'/../tmpl/login.php';
 
 ?>
 </body>
