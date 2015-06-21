@@ -3,7 +3,7 @@
 /**
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain a copy of the License at.
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -37,12 +37,13 @@ class GoogleAuthenticator
     /**
      * @param $secret
      * @param $code
+     *
      * @return bool
      */
     public function checkCode($secret, $code)
     {
         $time = floor(time() / 30);
-        for ($i = -1; $i <= 1; $i++) {
+        for ($i = -1; $i <= 1; ++$i) {
             if ($this->getCode($secret, $time + $i) == $code) {
                 return true;
             }
@@ -53,7 +54,8 @@ class GoogleAuthenticator
 
     /**
      * @param $secret
-     * @param  null   $time
+     * @param null $time
+     *
      * @return string
      */
     public function getCode($secret, $time = null)
@@ -62,10 +64,10 @@ class GoogleAuthenticator
             $time = floor(time() / 30);
         }
 
-        $base32 = new FixedBitNotation(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', TRUE, TRUE);
+        $base32 = new FixedBitNotation(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', true, true);
         $secret = $base32->decode($secret);
 
-        $time = pack("N", $time);
+        $time = pack('N', $time);
         $time = str_pad($time, 8, chr(0), STR_PAD_LEFT);
 
         $hash = hash_hmac('sha1', $time, $secret, true);
@@ -73,7 +75,7 @@ class GoogleAuthenticator
         $offset = $offset & 0xF;
 
         $truncatedHash = self::hashToInt($hash, $offset) & 0x7FFFFFFF;
-        $pinValue = str_pad($truncatedHash % $this->pinModulo, 6, "0", STR_PAD_LEFT);
+        $pinValue = str_pad($truncatedHash % $this->pinModulo, 6, '0', STR_PAD_LEFT);
 
         return $pinValue;
     }
@@ -81,26 +83,28 @@ class GoogleAuthenticator
     /**
      * @param $bytes
      * @param $start
-     * @return integer
+     *
+     * @return int
      */
     protected static function hashToInt($bytes, $start)
     {
         $input = substr($bytes, $start, strlen($bytes) - $start);
-        $val2 = unpack("N", substr($input, 0, 4));
+        $val2 = unpack('N', substr($input, 0, 4));
 
         return $val2[1];
     }
 
     /**
-     * @param  string $user
-     * @param  string $hostname
-     * @param  string $secret
+     * @param string $user
+     * @param string $hostname
+     * @param string $secret
+     *
      * @return string
      */
     public function getUrl($user, $hostname, $secret)
     {
-        $encoder = "https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=";
-        $encoderURL = sprintf("%sotpauth://totp/%s@%s%%3Fsecret%%3D%s", $encoder, $user, $hostname, $secret);
+        $encoder = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=';
+        $encoderURL = sprintf('%sotpauth://totp/%s@%s%%3Fsecret%%3D%s', $encoder, $user, $hostname, $secret);
 
         return $encoderURL;
     }
@@ -110,13 +114,13 @@ class GoogleAuthenticator
      */
     public function generateSecret()
     {
-        $secret = "";
-        for ($i = 1; $i <= $this->secretLength; $i++) {
+        $secret = '';
+        for ($i = 1; $i <= $this->secretLength; ++$i) {
             $c = rand(0, 255);
-            $secret .= pack("c", $c);
+            $secret .= pack('c', $c);
         }
 
-        $base32 = new FixedBitNotation(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', TRUE, TRUE);
+        $base32 = new FixedBitNotation(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', true, true);
 
         return $base32->encode($secret);
     }

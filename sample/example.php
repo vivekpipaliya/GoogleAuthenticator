@@ -1,15 +1,15 @@
 <?php
 
-include_once(__DIR__."/../lib/Google/Authenticator/FixedBitNotation.php");
-include_once(__DIR__."/../lib/Google/Authenticator/GoogleAuthenticator.php");
+include_once __DIR__.'/../lib/Google/Authenticator/FixedBitNotation.php';
+include_once __DIR__.'/../lib/Google/Authenticator/GoogleAuthenticator.php';
 
 $secret = 'XVQ2UIGO75XRUKJO';
 $time = floor(time() / 30);
-$code = "846474";
+$code = '846474';
 
 $g = new \Google\Authenticator\GoogleAuthenticator();
 
-print "Current Code is: ";
+print 'Current Code is: ';
 print $g->getCode($secret);
 
 print "\n";

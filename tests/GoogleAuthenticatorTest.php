@@ -1,10 +1,10 @@
 <?php
 
-namespace Google\Authenticator\Tests;
+namespace Google\Authenticator\tests;
 
 use Google\Authenticator\GoogleAuthenticator;
 
-class HandlerTest extends \PHPUnit_Framework_TestCase
+class GoogleAuthenticatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \Google\Authenticator\GoogleAuthenticator
@@ -34,7 +34,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
     {
         $url = $this->helper->getUrl('foo', 'foobar.org', '3DHTQX4GCRKHGS55CJ');
 
-        $expected = "https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/foo@foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ";
+        $expected = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/foo@foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ';
 
         $this->assertEquals($expected, $url);
     }

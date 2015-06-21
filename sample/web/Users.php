@@ -2,7 +2,7 @@
 
 class Users
 {
-    public function __construct($file = "../users.dat")
+    public function __construct($file = '../users.dat')
     {
         $this->userFile = $file;
 
@@ -87,7 +87,6 @@ class User
         }
 
         return false;
-
     }
 
     public function getUsername()
@@ -123,8 +122,8 @@ class User
         $time = floor(time() / (3600 * 24)); // get day number
         //about using the user agent: It's easy to fake it, but it increases the barrier for stealing and reusing cookies nevertheless
         // and it doesn't do any harm (except that it's invalid after a browser upgrade, but that may be even intented)
-        $cookie = $time . ":" . hash_hmac("sha1", $this->getUsername() . ":" . $time . ":" . $_SERVER['HTTP_USER_AGENT'], $this->getSecret());
-        setcookie("otp", $cookie, time() + (30 * 24 * 3600), null, null, null, true);
+        $cookie = $time.':'.hash_hmac('sha1', $this->getUsername().':'.$time.':'.$_SERVER['HTTP_USER_AGENT'], $this->getSecret());
+        setcookie('otp', $cookie, time() + (30 * 24 * 3600), null, null, null, true);
     }
 
     public function hasValidOTPCookie()
@@ -133,9 +132,9 @@ class User
         $daysUntilInvalid = 0;
         $time = (string) floor((time() / (3600 * 24))); // get day number
         if (isset($_COOKIE['otp'])) {
-            list($otpday, $hash) = explode(":", $_COOKIE['otp']);
+            list($otpday, $hash) = explode(':', $_COOKIE['otp']);
 
-            if ($otpday >= $time - $daysUntilInvalid && $hash == hash_hmac('sha1', $this->getUsername() . ":" . $otpday . ":" . $_SERVER['HTTP_USER_AGENT'], $this->getSecret())) {
+            if ($otpday >= $time - $daysUntilInvalid && $hash == hash_hmac('sha1', $this->getUsername().':'.$otpday.':'.$_SERVER['HTTP_USER_AGENT'], $this->getSecret())) {
                 return true;
             }
         }
