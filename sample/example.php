@@ -9,22 +9,22 @@ $code = '846474';
 
 $g = new \Google\Authenticator\GoogleAuthenticator();
 
-print 'Current Code is: ';
-print $g->getCode($secret);
+echo 'Current Code is: ';
+echo $g->getCode($secret);
 
-print "\n";
+echo "\n";
 
-print "Check if $code is valid: ";
+echo "Check if $code is valid: ";
 
 if ($g->checkCode($secret, $code)) {
-    print "YES \n";
+    echo "YES \n";
 } else {
-    print "NO \n";
+    echo "NO \n";
 }
 
 $secret = $g->generateSecret();
-print "Get a new Secret: $secret \n";
-print "The QR Code for this secret (to scan with the Google Authenticator App: \n";
+echo "Get a new Secret: $secret \n";
+echo "The QR Code for this secret (to scan with the Google Authenticator App: \n";
 
-print $g->getURL('chregu', 'example.org', $secret);
-print "\n";
+echo $g->getURL('chregu', 'example.org', $secret);
+echo "\n";
