@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 /**
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +22,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Google\Authenticator;
 
 class GoogleAuthenticator
@@ -30,8 +38,8 @@ class GoogleAuthenticator
     public function __construct($passCodeLength = 6, $secretLength = 10)
     {
         $this->passCodeLength = $passCodeLength;
-        $this->secretLength   = $secretLength;
-        $this->pinModulo      = pow(10, $this->passCodeLength);
+        $this->secretLength = $secretLength;
+        $this->pinModulo = pow(10, $this->passCodeLength);
     }
 
     /**
@@ -81,20 +89,6 @@ class GoogleAuthenticator
     }
 
     /**
-     * @param $bytes
-     * @param $start
-     *
-     * @return int
-     */
-    protected static function hashToInt($bytes, $start)
-    {
-        $input = substr($bytes, $start, strlen($bytes) - $start);
-        $val2 = unpack('N', substr($input, 0, 4));
-
-        return $val2[1];
-    }
-
-    /**
      * @param string $user
      * @param string $hostname
      * @param string $secret
@@ -123,5 +117,19 @@ class GoogleAuthenticator
         $base32 = new FixedBitNotation(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', true, true);
 
         return $base32->encode($secret);
+    }
+
+    /**
+     * @param $bytes
+     * @param $start
+     *
+     * @return int
+     */
+    protected static function hashToInt($bytes, $start)
+    {
+        $input = substr($bytes, $start, strlen($bytes) - $start);
+        $val2 = unpack('N', substr($input, 0, 4));
+
+        return $val2[1];
     }
 }
