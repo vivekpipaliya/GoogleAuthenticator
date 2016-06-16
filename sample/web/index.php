@@ -66,7 +66,7 @@ if ($username = $users->hasSession()) {
     die();
 }
     //if the username is set in _POST, then we assume the user filled in the login form.
-else {
+
     if (isset($_POST['username'])) {
         // check if we can load the user (ie. the user exists in our db)
         $user = $users->loadUser($_POST['username']);
@@ -108,7 +108,7 @@ else {
         include __DIR__.'/../tmpl/login-error.php';
         die();
     }
-}
+
 // if neither a session nor tried to submit the login credentials -> login screen
 include __DIR__.'/../tmpl/login.php';
 
