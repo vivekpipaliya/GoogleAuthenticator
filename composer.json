@@ -28,11 +28,11 @@
         "sllh/php-cs-fixer-styleci-bridge": "^2.0"
     },
     "autoload": {
-        "psr-4": {
-            "Google\\Authenticator\\": "lib/",
-            "Google\\Authenticator\\Tests\\": "tests/"
-        }
+        "psr-4": { "Google\\Authenticator\\": "lib/" }
     },
+    "autoload-dev": {
+        "psr-4": { "Google\\Authenticator\\Tests\\": "tests/" }
+     },
     "extra": {
         "branch-alias": {
             "dev-master": "1.x-dev"
