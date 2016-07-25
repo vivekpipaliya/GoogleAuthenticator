@@ -108,11 +108,7 @@ class GoogleAuthenticator
      */
     public function generateSecret()
     {
-        $secret = '';
-        for ($i = 1; $i <= $this->secretLength; ++$i) {
-            $c = rand(0, 255);
-            $secret .= pack('c', $c);
-        }
+        $secret = random_bytes($this->secretLength);
 
         $base32 = new FixedBitNotation(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', true, true);
 
