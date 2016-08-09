@@ -52,7 +52,7 @@ class GoogleAuthenticator
     {
         $time = floor(time() / 30);
         for ($i = -1; $i <= 1; ++$i) {
-            if ($this->getCode($secret, $time + $i) == $code) {
+            if ($this->codesEqual($this->getCode($secret, $time + $i), $code)) {
                 return true;
             }
         }
@@ -131,5 +131,32 @@ class GoogleAuthenticator
         $val2 = unpack('N', substr($input, 0, 4));
 
         return $val2[1];
+    }
+
+    /**
+     * A constant time code comparison.
+     *
+     * @param string $known known code
+     * @param string $given code received from a user
+     *
+     * @return bool
+     *
+     * @see http://codereview.stackexchange.com/q/13512/6747
+     */
+    private function codesEqual($known, $given)
+    {
+        if (strlen($given) !== strlen($known)) {
+            return false;
+        }
+
+        $res = 0;
+
+        $knownLen = strlen($known);
+
+        for ($i = 0; $i < $knownLen; ++$i) {
+            $res |= (ord($known[$i]) ^ ord($given[$i]));
+        }
+
+        return $res === 0;
     }
 }
