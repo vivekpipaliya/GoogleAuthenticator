@@ -21,7 +21,8 @@
 
     ],
     "require": {
-        "php": "^5.3 || ^7.0"
+        "php": "^5.3 || ^7.0",
+        "paragonie/random_compat": "^2.0"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "~2.7|~3.0",
