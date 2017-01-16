@@ -108,7 +108,6 @@ class FixedBitNotation
         // Generate encoded output;
         // each loop produces one encoded character
         for ($c = 0; $c < $byteCount * 8 / $bitsPerCharacter; ++$c) {
-
             // Get the bits needed for this encoded character
             if ($bitsRead + $bitsPerCharacter > 8) {
                 // Not enough bits remain in this byte for the current
