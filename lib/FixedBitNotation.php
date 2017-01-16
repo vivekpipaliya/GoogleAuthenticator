@@ -31,14 +31,10 @@ class FixedBitNotation
     protected $_charmap;
 
     /**
-     * Constructor.
-     *
-     * @param int    $bitsPerCharacter  Bits to use for each encoded
-     *                                  character
+     * @param int    $bitsPerCharacter  Bits to use for each encoded character
      * @param string $chars             Base character alphabet
      * @param bool   $rightPadFinalBits How to encode last character
-     * @param bool   $padFinalGroup     Add padding to end of encoded
-     *                                  output
+     * @param bool   $padFinalGroup     Add padding to end of encoded output
      * @param string $padCharacter      Character to use for padding
      */
     public function __construct($bitsPerCharacter, $chars = null, $rightPadFinalBits = false, $padFinalGroup = false, $padCharacter = '=')
