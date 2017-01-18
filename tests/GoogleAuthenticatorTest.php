@@ -41,10 +41,8 @@ class GoogleAuthenticatorTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUrl()
     {
-        $url = $this->helper->getUrl('foo', 'foobar.org', '3DHTQX4GCRKHGS55CJ');
-
-        $expected = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/foo@foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ';
-
+        $url = $this->helper->getUrl('foo', 'foobar.org', '3DHTQX4GCRKHGS55CJ', 'FooBar');
+        $expected = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/foo@foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ%26issuer%3DFooBar';
         $this->assertEquals($expected, $url);
     }
 }
