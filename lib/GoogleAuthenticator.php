@@ -102,8 +102,8 @@ class GoogleAuthenticator
     {
         $args = func_get_args();
         $encoder = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=';
-        $urlString = '%sotpauth://totp/%s@%s%%3Fsecret%%3D%s%%26issuer%%3D%s';
-        $encoderURL = sprintf($urlString, $encoder, $user, $hostname, $secret, $args[3]);
+        $urlString = '%sotpauth://totp/%s@%s%%3Fsecret%%3D%s'.(array_key_exists(3, $args) && !is_null($args[3]) ? ('%%26issuer%%3D'.$args[3]) : '');
+        $encoderURL = sprintf($urlString, $encoder, $user, $hostname, $secret);
 
         return $encoderURL;
     }
