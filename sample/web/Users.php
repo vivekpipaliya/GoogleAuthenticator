@@ -11,7 +11,7 @@
 
 class Users
 {
-    public function __construct($file = '../users.dat')
+    public function __construct(string $file = '../users.dat')
     {
         $this->userFile = $file;
 

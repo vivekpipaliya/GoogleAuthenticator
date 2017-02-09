@@ -36,7 +36,7 @@ class GoogleAuthenticator
      * @param int $passCodeLength
      * @param int $secretLength
      */
-    public function __construct($passCodeLength = 6, $secretLength = 10)
+    public function __construct(int $passCodeLength = 6, int $secretLength = 10)
     {
         $this->passCodeLength = $passCodeLength;
         $this->secretLength = $secretLength;
@@ -144,7 +144,7 @@ class GoogleAuthenticator
      *
      * @see http://codereview.stackexchange.com/q/13512/6747
      */
-    private function codesEqual($known, $given)
+    private function codesEqual(string $known, string $given): bool
     {
         if (strlen($given) !== strlen($known)) {
             return false;
