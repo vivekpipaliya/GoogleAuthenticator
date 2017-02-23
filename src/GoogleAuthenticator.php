@@ -38,6 +38,16 @@ class GoogleAuthenticator
      */
     public function __construct($passCodeLength = 6, $secretLength = 10)
     {
+        /* NEXT_MAJOR:
+          - remove this block
+          - make this class final
+          - and protected properties and methods private */
+        if (__CLASS__ !== get_class($this)) {
+            @trigger_error(
+                'Extending '.__CLASS__.' is deprecated since 1.x, and will not be possible in 2.0. ',
+                E_USER_DEPRECATED
+            );
+        }
         $this->passCodeLength = $passCodeLength;
         $this->secretLength = $secretLength;
         $this->pinModulo = pow(10, $this->passCodeLength);

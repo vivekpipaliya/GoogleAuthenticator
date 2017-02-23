@@ -39,6 +39,16 @@ class FixedBitNotation
      */
     public function __construct($bitsPerCharacter, $chars = null, $rightPadFinalBits = false, $padFinalGroup = false, $padCharacter = '=')
     {
+        /* NEXT_MAJOR:
+          - remove this block
+          - make this class final
+          - and properties private */
+        if (__CLASS__ !== get_class($this)) {
+            @trigger_error(
+                'Extending '.__CLASS__.' is deprecated since 1.x, and will not be possible in 2.0. ',
+                E_USER_DEPRECATED
+            );
+        }
         // Ensure validity of $chars
         if (!is_string($chars) || ($charLength = strlen($chars)) < 2) {
             $chars =

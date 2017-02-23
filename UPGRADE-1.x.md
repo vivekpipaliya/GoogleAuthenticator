@@ -1,6 +1,11 @@
 UPGRADE 1.x
 ===========
 
+### Closed API
+
+Extending any class defined in this library is now deprecated
+and will not be possible on next major release.
+
 ### Tests
 
 All files under the ``Tests`` directory are now correctly handled as internal test classes. 
