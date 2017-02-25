@@ -25,27 +25,27 @@
 
 namespace Google\Authenticator;
 
-class GoogleAuthenticator
+final class GoogleAuthenticator
 {
     /**
      * @var int
      */
-    protected $passCodeLength;
+    private $passCodeLength;
 
     /**
      * @var int
      */
-    protected $secretLength;
+    private $secretLength;
 
     /**
      * @var int
      */
-    protected $pinModulo;
+    private $pinModulo;
 
     /**
      * NEXT_MAJOR: remove this property.
      */
-    protected $fixBitNotation;
+    private $fixBitNotation;
 
     /**
      * @param int $passCodeLength
@@ -53,16 +53,6 @@ class GoogleAuthenticator
      */
     public function __construct(int $passCodeLength = 6, int $secretLength = 10)
     {
-        /* NEXT_MAJOR:
-          - remove this block
-          - make this class final
-          - and protected properties and methods private */
-        if (__CLASS__ !== get_class($this)) {
-            @trigger_error(
-                'Extending '.__CLASS__.' is deprecated since 1.x, and will not be possible in 2.0. ',
-                E_USER_DEPRECATED
-            );
-        }
         $this->passCodeLength = $passCodeLength;
         $this->secretLength = $secretLength;
         $this->pinModulo = pow(10, $this->passCodeLength);
@@ -151,7 +141,7 @@ class GoogleAuthenticator
      *
      * @return int
      */
-    protected static function hashToInt($bytes, $start)
+    private static function hashToInt($bytes, $start)
     {
         $input = substr($bytes, $start, strlen($bytes) - $start);
         $val2 = unpack('N', substr($input, 0, 4));

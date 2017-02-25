@@ -20,42 +20,42 @@ namespace Google\Authenticator;
  *
  * @author Andre DeMarre
  */
-class FixedBitNotation
+final class FixedBitNotation
 {
     /**
      * @var string
      */
-    protected $_chars;
+    private $_chars;
 
     /**
      * @var int
      */
-    protected $_bitsPerCharacter;
+    private $_bitsPerCharacter;
 
     /**
      * @var int
      */
-    protected $_radix;
+    private $_radix;
 
     /**
      * @var bool
      */
-    protected $_rightPadFinalBits;
+    private $_rightPadFinalBits;
 
     /**
      * @var bool
      */
-    protected $_padFinalGroup;
+    private $_padFinalGroup;
 
     /**
      * @var string
      */
-    protected $_padCharacter;
+    private $_padCharacter;
 
     /**
      * @var string[]
      */
-    protected $_charmap;
+    private $_charmap;
 
     /**
      * @param int    $bitsPerCharacter  Bits to use for each encoded character
@@ -66,16 +66,6 @@ class FixedBitNotation
      */
     public function __construct(int $bitsPerCharacter, string $chars = null, bool $rightPadFinalBits = false, bool $padFinalGroup = false, string $padCharacter = '=')
     {
-        /* NEXT_MAJOR:
-          - remove this block
-          - make this class final
-          - and properties private */
-        if (__CLASS__ !== get_class($this)) {
-            @trigger_error(
-                'Extending '.__CLASS__.' is deprecated since 1.x, and will not be possible in 2.0. ',
-                E_USER_DEPRECATED
-            );
-        }
         // Ensure validity of $chars
         if (!is_string($chars) || ($charLength = strlen($chars)) < 2) {
             $chars =

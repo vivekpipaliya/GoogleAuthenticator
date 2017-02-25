@@ -1,6 +1,10 @@
 UPGRADE FROM 1.x to 2.0
 =======================
 
+## Closed API
+
+All classes are now private, you may no longer extend them.
+
 ## Deprecations
 
 All the deprecated code introduced on 1.x is removed on 2.0.
