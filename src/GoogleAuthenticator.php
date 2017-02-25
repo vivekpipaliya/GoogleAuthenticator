@@ -98,7 +98,7 @@ final class GoogleAuthenticator
         $offset = ord(substr($hash, -1));
         $offset = $offset & 0xF;
 
-        $truncatedHash = self::hashToInt($hash, $offset) & 0x7FFFFFFF;
+        $truncatedHash = $this->hashToInt($hash, $offset) & 0x7FFFFFFF;
         $pinValue = str_pad($truncatedHash % $this->pinModulo, 6, '0', STR_PAD_LEFT);
 
         return $pinValue;
@@ -141,7 +141,7 @@ final class GoogleAuthenticator
      *
      * @return int
      */
-    private static function hashToInt(string $bytes, int $start): int
+    private function hashToInt(string $bytes, int $start): int
     {
         $input = substr($bytes, $start, strlen($bytes) - $start);
         $val2 = unpack('N', substr($input, 0, 4));
