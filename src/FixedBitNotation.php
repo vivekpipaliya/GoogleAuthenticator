@@ -25,37 +25,37 @@ final class FixedBitNotation
     /**
      * @var string
      */
-    private $_chars;
+    private $chars;
 
     /**
      * @var int
      */
-    private $_bitsPerCharacter;
+    private $bitsPerCharacter;
 
     /**
      * @var int
      */
-    private $_radix;
+    private $radix;
 
     /**
      * @var bool
      */
-    private $_rightPadFinalBits;
+    private $rightPadFinalBits;
 
     /**
      * @var bool
      */
-    private $_padFinalGroup;
+    private $padFinalGroup;
 
     /**
      * @var string
      */
-    private $_padCharacter;
+    private $padCharacter;
 
     /**
      * @var string[]
      */
-    private $_charmap;
+    private $charmap;
 
     /**
      * @param int    $bitsPerCharacter  Bits to use for each encoded character
@@ -97,12 +97,12 @@ final class FixedBitNotation
             $radix = 1 << $bitsPerCharacter;
         }
 
-        $this->_chars = $chars;
-        $this->_bitsPerCharacter = $bitsPerCharacter;
-        $this->_radix = $radix;
-        $this->_rightPadFinalBits = $rightPadFinalBits;
-        $this->_padFinalGroup = $padFinalGroup;
-        $this->_padCharacter = $padCharacter[0];
+        $this->chars = $chars;
+        $this->bitsPerCharacter = $bitsPerCharacter;
+        $this->radix = $radix;
+        $this->rightPadFinalBits = $rightPadFinalBits;
+        $this->padFinalGroup = $padFinalGroup;
+        $this->padCharacter = $padCharacter[0];
     }
 
     /**
@@ -122,11 +122,11 @@ final class FixedBitNotation
         $byte = array_shift($bytes);
         $bitsRead = 0;
 
-        $chars = $this->_chars;
-        $bitsPerCharacter = $this->_bitsPerCharacter;
-        $rightPadFinalBits = $this->_rightPadFinalBits;
-        $padFinalGroup = $this->_padFinalGroup;
-        $padCharacter = $this->_padCharacter;
+        $chars = $this->chars;
+        $bitsPerCharacter = $this->bitsPerCharacter;
+        $rightPadFinalBits = $this->rightPadFinalBits;
+        $padFinalGroup = $this->padFinalGroup;
+        $padCharacter = $this->padCharacter;
 
         // Generate encoded output;
         // each loop produces one encoded character
@@ -202,16 +202,16 @@ final class FixedBitNotation
             return '';
         }
 
-        $chars = $this->_chars;
-        $bitsPerCharacter = $this->_bitsPerCharacter;
-        $radix = $this->_radix;
-        $rightPadFinalBits = $this->_rightPadFinalBits;
-        $padFinalGroup = $this->_padFinalGroup;
-        $padCharacter = $this->_padCharacter;
+        $chars = $this->chars;
+        $bitsPerCharacter = $this->bitsPerCharacter;
+        $radix = $this->radix;
+        $rightPadFinalBits = $this->rightPadFinalBits;
+        $padFinalGroup = $this->padFinalGroup;
+        $padCharacter = $this->padCharacter;
 
         // Get index of encoded characters
-        if ($this->_charmap) {
-            $charmap = $this->_charmap;
+        if ($this->charmap) {
+            $charmap = $this->charmap;
         } else {
             $charmap = array();
 
@@ -219,7 +219,7 @@ final class FixedBitNotation
                 $charmap[$chars[$i]] = $i;
             }
 
-            $this->_charmap = $charmap;
+            $this->charmap = $charmap;
         }
 
         // The last encoded character is $encodedString[$lastNotatedIndex]
