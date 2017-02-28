@@ -295,7 +295,7 @@ class FixedBitNotation
                 }
             } elseif ($strict) {
                 // Unable to decode character; abort
-                return;
+                return null;
             }
         }
 
