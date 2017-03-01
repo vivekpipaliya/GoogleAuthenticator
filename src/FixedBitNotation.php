@@ -22,12 +22,39 @@ namespace Google\Authenticator;
  */
 class FixedBitNotation
 {
+    /**
+     * @var string
+     */
     protected $_chars;
+
+    /**
+     * @var int
+     */
     protected $_bitsPerCharacter;
+
+    /**
+     * @var int
+     */
     protected $_radix;
+
+    /**
+     * @var bool
+     */
     protected $_rightPadFinalBits;
+
+    /**
+     * @var bool
+     */
     protected $_padFinalGroup;
+
+    /**
+     * @var string
+     */
     protected $_padCharacter;
+
+    /**
+     * @var string[]
+     */
     protected $_charmap;
 
     /**
@@ -268,7 +295,7 @@ class FixedBitNotation
                 }
             } elseif ($strict) {
                 // Unable to decode character; abort
-                return;
+                return null;
             }
         }
 
