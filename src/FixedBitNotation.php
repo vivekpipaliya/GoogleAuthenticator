@@ -20,42 +20,42 @@ namespace Google\Authenticator;
  *
  * @author Andre DeMarre
  */
-class FixedBitNotation
+final class FixedBitNotation
 {
     /**
      * @var string
      */
-    protected $_chars;
+    private $chars;
 
     /**
      * @var int
      */
-    protected $_bitsPerCharacter;
+    private $bitsPerCharacter;
 
     /**
      * @var int
      */
-    protected $_radix;
+    private $radix;
 
     /**
      * @var bool
      */
-    protected $_rightPadFinalBits;
+    private $rightPadFinalBits;
 
     /**
      * @var bool
      */
-    protected $_padFinalGroup;
+    private $padFinalGroup;
 
     /**
      * @var string
      */
-    protected $_padCharacter;
+    private $padCharacter;
 
     /**
      * @var string[]
      */
-    protected $_charmap;
+    private $charmap;
 
     /**
      * @param int    $bitsPerCharacter  Bits to use for each encoded character
@@ -66,16 +66,6 @@ class FixedBitNotation
      */
     public function __construct(int $bitsPerCharacter, string $chars = null, bool $rightPadFinalBits = false, bool $padFinalGroup = false, string $padCharacter = '=')
     {
-        /* NEXT_MAJOR:
-          - remove this block
-          - make this class final
-          - and properties private */
-        if (__CLASS__ !== get_class($this)) {
-            @trigger_error(
-                'Extending '.__CLASS__.' is deprecated since 1.x, and will not be possible in 2.0. ',
-                E_USER_DEPRECATED
-            );
-        }
         // Ensure validity of $chars
         if (!is_string($chars) || ($charLength = strlen($chars)) < 2) {
             $chars =
@@ -107,12 +97,12 @@ class FixedBitNotation
             $radix = 1 << $bitsPerCharacter;
         }
 
-        $this->_chars = $chars;
-        $this->_bitsPerCharacter = $bitsPerCharacter;
-        $this->_radix = $radix;
-        $this->_rightPadFinalBits = $rightPadFinalBits;
-        $this->_padFinalGroup = $padFinalGroup;
-        $this->_padCharacter = $padCharacter[0];
+        $this->chars = $chars;
+        $this->bitsPerCharacter = $bitsPerCharacter;
+        $this->radix = $radix;
+        $this->rightPadFinalBits = $rightPadFinalBits;
+        $this->padFinalGroup = $padFinalGroup;
+        $this->padCharacter = $padCharacter[0];
     }
 
     /**
@@ -132,11 +122,11 @@ class FixedBitNotation
         $byte = array_shift($bytes);
         $bitsRead = 0;
 
-        $chars = $this->_chars;
-        $bitsPerCharacter = $this->_bitsPerCharacter;
-        $rightPadFinalBits = $this->_rightPadFinalBits;
-        $padFinalGroup = $this->_padFinalGroup;
-        $padCharacter = $this->_padCharacter;
+        $chars = $this->chars;
+        $bitsPerCharacter = $this->bitsPerCharacter;
+        $rightPadFinalBits = $this->rightPadFinalBits;
+        $padFinalGroup = $this->padFinalGroup;
+        $padCharacter = $this->padCharacter;
 
         // Generate encoded output;
         // each loop produces one encoded character
@@ -212,16 +202,16 @@ class FixedBitNotation
             return '';
         }
 
-        $chars = $this->_chars;
-        $bitsPerCharacter = $this->_bitsPerCharacter;
-        $radix = $this->_radix;
-        $rightPadFinalBits = $this->_rightPadFinalBits;
-        $padFinalGroup = $this->_padFinalGroup;
-        $padCharacter = $this->_padCharacter;
+        $chars = $this->chars;
+        $bitsPerCharacter = $this->bitsPerCharacter;
+        $radix = $this->radix;
+        $rightPadFinalBits = $this->rightPadFinalBits;
+        $padFinalGroup = $this->padFinalGroup;
+        $padCharacter = $this->padCharacter;
 
         // Get index of encoded characters
-        if ($this->_charmap) {
-            $charmap = $this->_charmap;
+        if ($this->charmap) {
+            $charmap = $this->charmap;
         } else {
             $charmap = array();
 
@@ -229,7 +219,7 @@ class FixedBitNotation
                 $charmap[$chars[$i]] = $i;
             }
 
-            $this->_charmap = $charmap;
+            $this->charmap = $charmap;
         }
 
         // The last encoded character is $encodedString[$lastNotatedIndex]
