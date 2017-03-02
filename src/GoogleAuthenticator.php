@@ -27,9 +27,24 @@ namespace Google\Authenticator;
 
 class GoogleAuthenticator
 {
+    /**
+     * @var int
+     */
     protected $passCodeLength;
+
+    /**
+     * @var int
+     */
     protected $secretLength;
+
+    /**
+     * @var int
+     */
     protected $pinModulo;
+
+    /**
+     * NEXT_MAJOR: remove this property.
+     */
     protected $fixBitNotation;
 
     /**
@@ -131,8 +146,8 @@ class GoogleAuthenticator
     }
 
     /**
-     * @param $bytes
-     * @param $start
+     * @param string $bytes
+     * @param int    $start
      *
      * @return int
      */
