@@ -59,7 +59,7 @@ class GoogleAuthenticator
           - and protected properties and methods private */
         if (__CLASS__ !== get_class($this)) {
             @trigger_error(
-                'Extending '.__CLASS__.' is deprecated since 1.x, and will not be possible in 2.0. ',
+                'Extending '.__CLASS__.' is deprecated since 1.1, and will not be possible in 2.0. ',
                 E_USER_DEPRECATED
             );
         }
