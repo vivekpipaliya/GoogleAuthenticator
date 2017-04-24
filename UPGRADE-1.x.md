@@ -1,6 +1,9 @@
 UPGRADE 1.x
 ===========
 
+UPGRADE FROM 1.0 to 1.1
+=======================
+
 ### Closed API
 
 Extending any class defined in this library is now deprecated
