@@ -7,7 +7,6 @@
     <br/>
     (Set $debug in index.php to false, if you don't want to have the OTP prefilled (for real life application, for example ;))<br/>
 <?php
-
 }
 ?>
 
