@@ -11,7 +11,6 @@ if (!isset($_GET['showqr'])) {
 </p>
 
 <?php
-
 }
 ?>
 
