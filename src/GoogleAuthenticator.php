@@ -69,7 +69,7 @@ final class GoogleAuthenticator
      *
      * @return bool
      */
-    public function checkCode($secret, $code)
+    public function checkCode($secret, $code): bool
     {
         $time = floor(time() / $this->codePeriod);
 
@@ -88,7 +88,7 @@ final class GoogleAuthenticator
      *
      * @return string
      */
-    public function getCode($secret, $time = null)
+    public function getCode($secret, $time = null): string
     {
         if (!$time) {
             $time = floor(time() / $this->codePeriod);
@@ -119,7 +119,7 @@ final class GoogleAuthenticator
      *
      * @return string
      */
-    public function getUrl($user, $hostname, $secret)
+    public function getUrl($user, $hostname, $secret): string
     {
         $args = func_get_args();
         $encoder = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=';
@@ -132,7 +132,7 @@ final class GoogleAuthenticator
     /**
      * @return string
      */
-    public function generateSecret()
+    public function generateSecret(): string
     {
         $secret = random_bytes($this->secretLength);
 
