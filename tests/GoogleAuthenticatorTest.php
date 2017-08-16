@@ -33,10 +33,35 @@ class GoogleAuthenticatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetCode()
+    /**
+     * @dataProvider testCheckCodeData
+     */
+    public function testCheckCode($expectation, $inputDate)
     {
-        $this->assertTrue(
-            $this->helper->checkCode('3DHTQX4GCRKHGS55CJ', $this->helper->getCode('3DHTQX4GCRKHGS55CJ', strtotime('17/03/2012 22:17')))
+        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'));
+        $this->assertSame(
+            $expectation,
+            $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', strtotime($inputDate) / 30))
+        );
+    }
+
+    /**
+     * all dates compare to the same date + or - the several seconds compared
+     * to 22:17:00 to verify if the code was perhaps the previous or next 30
+     * seconds. This ensures that slow entries or time delays are not causing
+     * problems.
+     *
+     * @return array
+     */
+    public static function testCheckCodeData(): array
+    {
+        return array(
+            array(false, '2012-03-17 22:16:29'),
+            array(true, '2012-03-17 22:16:30'),
+            array(true, '2012-03-17 22:17:00'),
+            array(true, '2012-03-17 22:17:30'),
+            array(false, '2012-03-17 22:18:00'),
+            array(false, 'this date cannot be resolved and results into false'),
         );
     }
 

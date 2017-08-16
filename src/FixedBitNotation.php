@@ -112,7 +112,7 @@ final class FixedBitNotation
      *
      * @return string
      */
-    public function encode($rawString)
+    public function encode($rawString): string
     {
         // Unpack string into an array of bytes
         $bytes = unpack('C*', $rawString);
@@ -195,7 +195,7 @@ final class FixedBitNotation
      *
      * @return string
      */
-    public function decode($encodedString, $caseSensitive = true, $strict = false)
+    public function decode($encodedString, $caseSensitive = true, $strict = false): string
     {
         if (!$encodedString || !is_string($encodedString)) {
             // Empty string, nothing to decode
@@ -238,11 +238,9 @@ final class FixedBitNotation
         for ($c = 0; $c <= $lastNotatedIndex; ++$c) {
             if (!isset($charmap[$encodedString[$c]]) && !$caseSensitive) {
                 // Encoded character was not found; try other case
-                if (isset($charmap[$cUpper
-                = strtoupper($encodedString[$c])])) {
+                if (isset($charmap[$cUpper = strtoupper($encodedString[$c])])) {
                     $charmap[$encodedString[$c]] = $charmap[$cUpper];
-                } elseif (isset($charmap[$cLower
-                = strtolower($encodedString[$c])])) {
+                } elseif (isset($charmap[$cLower = strtolower($encodedString[$c])])) {
                     $charmap[$encodedString[$c]] = $charmap[$cLower];
                 }
             }

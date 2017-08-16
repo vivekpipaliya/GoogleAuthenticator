@@ -25,13 +25,11 @@
 
 namespace Google\Authenticator;
 
+/**
+ * @see https://github.com/google/google-authenticator/wiki/Key-Uri-Format
+ */
 final class GoogleAuthenticator
 {
-    /**
-     * @var int
-     */
-    private $passCodeLength;
-
     /**
      * @var int
      */
@@ -43,9 +41,9 @@ final class GoogleAuthenticator
     private $pinModulo;
 
     /**
-     * NEXT_MAJOR: remove this property.
+     * @var \DateTimeInterface
      */
-    private $fixBitNotation;
+    private $now;
 
     /**
      * @var int
@@ -53,14 +51,15 @@ final class GoogleAuthenticator
     private $codePeriod = 30;
 
     /**
-     * @param int $passCodeLength
-     * @param int $secretLength
+     * @param int                     $passCodeLength
+     * @param int                     $secretLength
+     * @param \DateTimeInterface|null $now
      */
-    public function __construct(int $passCodeLength = 6, int $secretLength = 10)
+    public function __construct(int $passCodeLength = 6, int $secretLength = 10, \DateTimeInterface $now = null)
     {
-        $this->passCodeLength = $passCodeLength;
         $this->secretLength = $secretLength;
-        $this->pinModulo = pow(10, $this->passCodeLength);
+        $this->pinModulo = 10 ** $passCodeLength;
+        $this->now = $now ?? new \DateTime();
     }
 
     /**
@@ -71,7 +70,7 @@ final class GoogleAuthenticator
      */
     public function checkCode($secret, $code): bool
     {
-        $time = floor(time() / $this->codePeriod);
+        $time = floor($this->now->getTimestamp() / $this->codePeriod);
 
         for ($i = -1; $i <= 1; ++$i) {
             if (hash_equals($this->getCode($secret, $time + $i), $code)) {
@@ -91,7 +90,7 @@ final class GoogleAuthenticator
     public function getCode($secret, $time = null): string
     {
         if (null === $time) {
-            $time = floor(time() / $this->codePeriod);
+            $time = floor($this->now->getTimestamp() / $this->codePeriod);
         }
 
         $base32 = new FixedBitNotation(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', true, true);
@@ -102,12 +101,11 @@ final class GoogleAuthenticator
 
         $hash = hash_hmac('sha1', $time, $secret, true);
         $offset = ord(substr($hash, -1));
-        $offset = $offset & 0xF;
+        $offset &= 0xF;
 
         $truncatedHash = $this->hashToInt($hash, $offset) & 0x7FFFFFFF;
-        $pinValue = str_pad($truncatedHash % $this->pinModulo, 6, '0', STR_PAD_LEFT);
 
-        return $pinValue;
+        return str_pad($truncatedHash % $this->pinModulo, 6, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -121,12 +119,17 @@ final class GoogleAuthenticator
      */
     public function getUrl($user, $hostname, $secret): string
     {
-        $args = func_get_args();
-        $encoder = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=';
-        $urlString = '%sotpauth://totp/%s@%s%%3Fsecret%%3D%s'.(array_key_exists(3, $args) && !is_null($args[3]) ? ('%%26issuer%%3D'.$args[3]) : '');
-        $encoderURL = sprintf($urlString, $encoder, $user, $hostname, $secret);
+        $issuer = func_get_args()[3] ?? null;
+        $label = sprintf('%s@%s', $user, $hostname);
 
-        return $encoderURL;
+        $encoder = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=';
+        $urlString = 'otpauth://totp/%s%%3Fsecret%%3D%s';
+
+        if (null !== $issuer) {
+            $urlString .= '%%26issuer%%3D'.$issuer;
+        }
+
+        return $encoder.sprintf($urlString, $label, $secret);
     }
 
     /**
@@ -134,11 +137,8 @@ final class GoogleAuthenticator
      */
     public function generateSecret(): string
     {
-        $secret = random_bytes($this->secretLength);
-
-        $base32 = new FixedBitNotation(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', true, true);
-
-        return $base32->encode($secret);
+        return (new FixedBitNotation(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', true, true))
+            ->encode(random_bytes($this->secretLength));
     }
 
     /**
