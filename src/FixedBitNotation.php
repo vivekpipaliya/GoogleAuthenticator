@@ -170,7 +170,7 @@ final class FixedBitNotation
             }
 
             // Read only the needed bits from this byte
-            $bits = $byte >> 8 - ($bitsRead + ($newBitCount));
+            $bits = $byte >> 8 - ($bitsRead + $newBitCount);
             $bits ^= $bits >> $newBitCount << $newBitCount;
             $bitsRead += $newBitCount;
 
