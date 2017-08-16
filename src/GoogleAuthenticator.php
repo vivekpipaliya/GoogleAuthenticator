@@ -90,7 +90,7 @@ final class GoogleAuthenticator
      */
     public function getCode($secret, $time = null): string
     {
-        if (!$time) {
+        if (null === $time) {
             $time = floor(time() / $this->codePeriod);
         }
 
