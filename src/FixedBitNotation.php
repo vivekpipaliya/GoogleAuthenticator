@@ -206,7 +206,6 @@ final class FixedBitNotation
         $bitsPerCharacter = $this->bitsPerCharacter;
         $radix = $this->radix;
         $rightPadFinalBits = $this->rightPadFinalBits;
-        $padFinalGroup = $this->padFinalGroup;
         $padCharacter = $this->padCharacter;
 
         // Get index of encoded characters
