@@ -48,6 +48,11 @@ final class GoogleAuthenticator
     private $fixBitNotation;
 
     /**
+     * @var int
+     */
+    private $codePeriod = 30;
+
+    /**
      * @param int $passCodeLength
      * @param int $secretLength
      */
@@ -66,7 +71,8 @@ final class GoogleAuthenticator
      */
     public function checkCode($secret, $code)
     {
-        $time = floor(time() / 30);
+        $time = floor(time() / $this->codePeriod);
+
         for ($i = -1; $i <= 1; ++$i) {
             if (hash_equals($this->getCode($secret, $time + $i), $code)) {
                 return true;
@@ -85,7 +91,7 @@ final class GoogleAuthenticator
     public function getCode($secret, $time = null)
     {
         if (!$time) {
-            $time = floor(time() / 30);
+            $time = floor(time() / $this->codePeriod);
         }
 
         $base32 = new FixedBitNotation(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', true, true);
