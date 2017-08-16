@@ -64,8 +64,8 @@ final class GoogleAuthenticator
     }
 
     /**
-     * @param $secret
-     * @param $code
+     * @param string $secret
+     * @param string $code
      *
      * @return bool
      */
@@ -83,8 +83,8 @@ final class GoogleAuthenticator
     }
 
     /**
-     * @param $secret
-     * @param null $time
+     * @param string                $secret
+     * @param float|string|int|null $time
      *
      * @return string
      */
