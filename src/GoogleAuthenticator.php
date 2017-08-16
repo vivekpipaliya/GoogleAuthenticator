@@ -143,9 +143,6 @@ final class GoogleAuthenticator
      */
     private function hashToInt(string $bytes, int $start): int
     {
-        $input = substr($bytes, $start, strlen($bytes) - $start);
-        $val2 = unpack('N', substr($input, 0, 4));
-
-        return $val2[1];
+        return unpack('N', substr(substr($bytes, $start), 0, 4))[1];
     }
 }
