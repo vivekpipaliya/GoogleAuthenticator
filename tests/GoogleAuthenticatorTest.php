@@ -65,18 +65,26 @@ class GoogleAuthenticatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Using Google\Authenticator\GoogleAuthenticator::getUrl() is deprecated as of 2.1 and will be removed in 3.0. Use Google\Authenticator\GoogleQrUrl::generate() instead.
+     */
     public function testGetUrlIssuer()
     {
         $this->assertEquals(
-            'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/foo@foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ%26issuer%3DFooBar',
+            'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ffoo%40foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ%26issuer%3DFooBar',
             $this->helper->getUrl('foo', 'foobar.org', '3DHTQX4GCRKHGS55CJ', 'FooBar')
         );
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Using Google\Authenticator\GoogleAuthenticator::getUrl() is deprecated as of 2.1 and will be removed in 3.0. Use Google\Authenticator\GoogleQrUrl::generate() instead.
+     */
     public function testGetUrlNoIssuer()
     {
         $this->assertEquals(
-            'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/foo@foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ',
+            'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ffoo%40foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ',
             $this->helper->getUrl('foo', 'foobar.org', '3DHTQX4GCRKHGS55CJ')
         );
     }

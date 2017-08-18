@@ -109,27 +109,35 @@ final class GoogleAuthenticator
     }
 
     /**
-     * NEXT_MAJOR: Add a new parameter called $issuer.
+     * NEXT_MAJOR: Remove this method.
      *
      * @param string $user
      * @param string $hostname
      * @param string $secret
      *
      * @return string
+     *
+     * @deprecated deprecated as of 2.1 and will be removed in 3.0. Use Google\Authenticator\GoogleQrUrl::generate() instead.
      */
     public function getUrl($user, $hostname, $secret): string
     {
+        @trigger_error(sprintf(
+            'Using %s() is deprecated as of 2.1 and will be removed in 3.0. '.
+            'Use Google\Authenticator\GoogleQrUrl::generate() instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         $issuer = func_get_args()[3] ?? null;
-        $label = sprintf('%s@%s', $user, $hostname);
+        $accountName = sprintf('%s@%s', $user, $hostname);
 
-        $encoder = 'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=';
-        $urlString = 'otpauth://totp/%s%%3Fsecret%%3D%s';
+        // manually concat the issuer to avoid a change in URL
+        $url = GoogleQrUrl::generate($accountName, $secret);
 
-        if (null !== $issuer) {
-            $urlString .= '%%26issuer%%3D'.$issuer;
+        if ($issuer) {
+            $url .= '%26issuer%3D'.$issuer;
         }
 
-        return $encoder.sprintf($urlString, $label, $secret);
+        return $url;
     }
 
     /**
