@@ -34,14 +34,35 @@ class GoogleAuthenticatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group legacy
+     * @expectedDeprecation Passing anything other than null or a DateTimeInterface to $time is deprecated as of 2.0 and will not be possible as of 3.0.
      * @dataProvider testCheckCodeData
      */
-    public function testCheckCode($expectation, $inputDate)
+    public function testCheckCodeWithLegacyArguments($expectation, $inputDate)
     {
         $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'));
         $this->assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', strtotime($inputDate) / 30))
+        );
+    }
+
+    /**
+     * @dataProvider testCheckCodeData
+     */
+    public function testCheckCode($expectation, $inputDate)
+    {
+        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'));
+
+        try {
+            $datetime = new \DateTime($inputDate);
+        } catch (\Exception $e) {
+            return;
+        }
+
+        $this->assertSame(
+            $expectation,
+            $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime))
         );
     }
 
