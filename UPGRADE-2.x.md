@@ -10,3 +10,7 @@ UPGRADE 2.x
    // would be replaced by
    GoogleQrUrl::generate('username@foobar.org', '3DHTQX4GCRKHGS55CJ', 'FooBar');
    ```
+
+ * The second argument of `getCode` allowed multiple types and had to be
+   divided by 30 in order to work. This behavior is now deprecated and a
+   `DateTimeInterface` implementation should be passed instead.

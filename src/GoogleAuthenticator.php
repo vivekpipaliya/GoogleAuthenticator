@@ -59,7 +59,7 @@ final class GoogleAuthenticator
     {
         $this->secretLength = $secretLength;
         $this->pinModulo = 10 ** $passCodeLength;
-        $this->now = $now ?? new \DateTime();
+        $this->now = $now ?? new \DateTimeImmutable();
     }
 
     /**
@@ -70,36 +70,57 @@ final class GoogleAuthenticator
      */
     public function checkCode($secret, $code): bool
     {
-        $time = floor($this->now->getTimestamp() / $this->codePeriod);
+        // current period
+        if (hash_equals($this->getCode($secret, $this->now), $code)) {
+            return true;
+        }
 
-        for ($i = -1; $i <= 1; ++$i) {
-            if (hash_equals($this->getCode($secret, $time + $i), $code)) {
-                return true;
-            }
+        // previous period, happens if the user was slow to enter or it just crossed over
+        $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() - $this->codePeriod));
+        if (hash_equals($this->getCode($secret, $dateTime), $code)) {
+            return true;
+        }
+
+        // next period, happens if the user is not completely synced and possibly a few seconds ahead
+        $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() + $this->codePeriod));
+        if (hash_equals($this->getCode($secret, $dateTime), $code)) {
+            return true;
         }
 
         return false;
     }
 
     /**
-     * @param string                $secret
-     * @param float|string|int|null $time
+     * NEXT_MAJOR: add the interface typehint to $time and remove deprecation.
+     *
+     * @param string                                   $secret
+     * @param float|string|int|null|\DateTimeInterface $time
      *
      * @return string
      */
-    public function getCode($secret, $time = null): string
+    public function getCode($secret, /* \DateTimeInterface */$time = null): string
     {
         if (null === $time) {
-            $time = floor($this->now->getTimestamp() / $this->codePeriod);
+            $time = $this->now;
+        }
+
+        if ($time instanceof \DateTimeInterface) {
+            $timeForCode = floor($time->getTimestamp() / $this->codePeriod);
+        } else {
+            @trigger_error(
+                'Passing anything other than null or a DateTimeInterface to $time is deprecated as of 2.0 '.
+                'and will not be possible as of 3.0.',
+                E_USER_DEPRECATED
+            );
+            $timeForCode = $time;
         }
 
         $base32 = new FixedBitNotation(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', true, true);
         $secret = $base32->decode($secret);
 
-        $time = pack('N', $time);
-        $time = str_pad($time, 8, chr(0), STR_PAD_LEFT);
+        $timeForCode = str_pad(pack('N', $timeForCode), 8, chr(0), STR_PAD_LEFT);
 
-        $hash = hash_hmac('sha1', $time, $secret, true);
+        $hash = hash_hmac('sha1', $timeForCode, $secret, true);
         $offset = ord(substr($hash, -1));
         $offset &= 0xF;
 
