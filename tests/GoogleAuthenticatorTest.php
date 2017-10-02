@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Google\Authenticator\tests;
+namespace Sonata\GoogleAuthenticator\tests;
 
-use Google\Authenticator\GoogleAuthenticator;
+use Sonata\GoogleAuthenticator\GoogleAuthenticator;
 
 class GoogleAuthenticatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Google\Authenticator\GoogleAuthenticator
+     * @var \Sonata\GoogleAuthenticator\GoogleAuthenticator
      */
     protected $helper;
 
@@ -88,7 +88,7 @@ class GoogleAuthenticatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Using Google\Authenticator\GoogleAuthenticator::getUrl() is deprecated as of 2.1 and will be removed in 3.0. Use Google\Authenticator\GoogleQrUrl::generate() instead.
+     * @expectedDeprecation Using Sonata\GoogleAuthenticator\GoogleAuthenticator::getUrl() is deprecated as of 2.1 and will be removed in 3.0. Use Sonata\GoogleAuthenticator\GoogleQrUrl::generate() instead.
      */
     public function testGetUrlIssuer()
     {
@@ -100,7 +100,7 @@ class GoogleAuthenticatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Using Google\Authenticator\GoogleAuthenticator::getUrl() is deprecated as of 2.1 and will be removed in 3.0. Use Google\Authenticator\GoogleQrUrl::generate() instead.
+     * @expectedDeprecation Using Sonata\GoogleAuthenticator\GoogleAuthenticator::getUrl() is deprecated as of 2.1 and will be removed in 3.0. Use Sonata\GoogleAuthenticator\GoogleQrUrl::generate() instead.
      */
     public function testGetUrlNoIssuer()
     {

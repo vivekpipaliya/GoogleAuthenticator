@@ -23,7 +23,7 @@
  * limitations under the License.
  */
 
-namespace Google\Authenticator;
+namespace Sonata\GoogleAuthenticator;
 
 /**
  * @see https://github.com/google/google-authenticator/wiki/Key-Uri-Format
@@ -138,13 +138,13 @@ final class GoogleAuthenticator
      *
      * @return string
      *
-     * @deprecated deprecated as of 2.1 and will be removed in 3.0. Use Google\Authenticator\GoogleQrUrl::generate() instead.
+     * @deprecated deprecated as of 2.1 and will be removed in 3.0. Use Sonata\GoogleAuthenticator\GoogleQrUrl::generate() instead.
      */
     public function getUrl($user, $hostname, $secret): string
     {
         @trigger_error(sprintf(
             'Using %s() is deprecated as of 2.1 and will be removed in 3.0. '.
-            'Use Google\Authenticator\GoogleQrUrl::generate() instead.',
+            'Use Sonata\GoogleAuthenticator\GoogleQrUrl::generate() instead.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -181,3 +181,6 @@ final class GoogleAuthenticator
         return unpack('N', substr(substr($bytes, $start), 0, 4))[1];
     }
 }
+
+// NEXT_MAJOR: Remove class alias
+class_alias('Sonata\GoogleAuthenticator\GoogleAuthenticator', 'Google\Authenticator\GoogleAuthenticator', false);
