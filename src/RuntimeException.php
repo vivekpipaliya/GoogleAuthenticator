@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Google\Authenticator;
+namespace Sonata\GoogleAuthenticator;
 
 /**
  * Contains runtime exception templates.
@@ -41,3 +41,6 @@ final class RuntimeException extends \RuntimeException
         return new self('The secret name may not be an empty string.');
     }
 }
+
+// NEXT_MAJOR: Remove class alias
+class_alias('Sonata\GoogleAuthenticator\RuntimeException', 'Google\Authenticator\RuntimeException', false);

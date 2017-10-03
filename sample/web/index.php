@@ -3,8 +3,8 @@ ob_start(); //i'm too lazy to check when is sent what ;)
 //set session cookie to be read only via http and not by JavaScript
 ini_set('session.cookie_httponly', 1);
 
-include_once __DIR__.'/../../src/Google/Authenticator/GoogleAuthenticator.php';
-include_once __DIR__.'/../../src/Google/Authenticator/GoogleQrUrl.php';
+include_once __DIR__.'/../../src/GoogleAuthenticator.php';
+include_once __DIR__.'/../../src/GoogleQrUrl.php';
 include_once 'Users.php';
 
 ?>

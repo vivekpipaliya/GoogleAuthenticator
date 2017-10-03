@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Google\Authenticator;
+namespace Sonata\GoogleAuthenticator;
 
 /**
  * FixedBitNotation.
@@ -289,3 +289,6 @@ final class FixedBitNotation
         return $rawString;
     }
 }
+
+// NEXT_MAJOR: Remove class alias
+class_alias('Sonata\GoogleAuthenticator\FixedBitNotation', 'Google\Authenticator\FixedBitNotation', false);

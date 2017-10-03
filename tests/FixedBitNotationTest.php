@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Google\Authenticator\tests;
+namespace Sonata\GoogleAuthenticator\tests;
 
-use Google\Authenticator\FixedBitNotation;
+use Sonata\GoogleAuthenticator\FixedBitNotation;
 
 class FixedBitNotationTest extends \PHPUnit_Framework_TestCase
 {

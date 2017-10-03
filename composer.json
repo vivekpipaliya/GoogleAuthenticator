@@ -28,10 +28,16 @@
         "sllh/php-cs-fixer-styleci-bridge": "^2.1"
     },
     "autoload": {
-        "psr-4": { "Google\\Authenticator\\": "src/" }
+        "psr-4": {
+            "Google\\Authenticator\\": "src/",
+            "Sonata\\GoogleAuthenticator\\": "src/"
+        }
     },
     "autoload-dev": {
-        "psr-4": { "Google\\Authenticator\\Tests\\": "tests/" }
+        "psr-4": {
+            "Google\\Authenticator\\Tests\\": "tests/",
+            "Sonata\\GoogleAuthenticator\\Tests\\": "tests/"
+        }
      },
     "extra": {
         "branch-alias": {

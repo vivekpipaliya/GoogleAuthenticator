@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Google\Authenticator;
+namespace Sonata\GoogleAuthenticator;
 
 /**
  * Responsible for QR image url generation.
@@ -89,3 +89,6 @@ final class GoogleQrUrl
         );
     }
 }
+
+// NEXT_MAJOR: Remove class alias
+class_alias('Sonata\GoogleAuthenticator\GoogleQrUrl', 'Google\Authenticator\GoogleQrUrl', false);

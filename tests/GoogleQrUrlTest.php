@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Google\Authenticator\tests;
+namespace Sonata\GoogleAuthenticator\tests;
 
-use Google\Authenticator\GoogleQrUrl;
+use Sonata\GoogleAuthenticator\GoogleQrUrl;
 
 class GoogleQrUrlTest extends \PHPUnit_Framework_TestCase
 {
@@ -36,7 +36,7 @@ class GoogleQrUrlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Google\Authenticator\RuntimeException
+     * @expectedException \Sonata\GoogleAuthenticator\RuntimeException
      * @expectedExceptionMessage The issuer name may not contain a double colon (:) and may not be an empty string. Given "".
      */
     public function testEmptyIssuer()
@@ -45,7 +45,7 @@ class GoogleQrUrlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Google\Authenticator\RuntimeException
+     * @expectedException \Sonata\GoogleAuthenticator\RuntimeException
      * @expectedExceptionMessage The issuer name may not contain a double colon (:) and may not be an empty string. Given "Foo: bar".
      */
     public function testInvalidIssuer()
@@ -54,7 +54,7 @@ class GoogleQrUrlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Google\Authenticator\RuntimeException
+     * @expectedException \Sonata\GoogleAuthenticator\RuntimeException
      * @expectedExceptionMessage The account name may not contain a double colon (:) and may not be an empty string. Given "".
      */
     public function testEmptyAccountName()
@@ -63,7 +63,7 @@ class GoogleQrUrlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Google\Authenticator\RuntimeException
+     * @expectedException \Sonata\GoogleAuthenticator\RuntimeException
      * @expectedExceptionMessage The account name may not contain a double colon (:) and may not be an empty string. Given "John: Doe".
      */
     public function testInvalidAccountName()
@@ -72,7 +72,7 @@ class GoogleQrUrlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Google\Authenticator\RuntimeException
+     * @expectedException \Sonata\GoogleAuthenticator\RuntimeException
      * @expectedExceptionMessage The secret name may not be an empty string.
      */
     public function testInvalidSecret()
