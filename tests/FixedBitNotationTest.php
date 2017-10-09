@@ -33,12 +33,12 @@ class FixedBitNotationTest extends \PHPUnit_Framework_TestCase
      */
     public static function decodeGuardData(): array
     {
-        return array(
-            array(null),
-            array(''),
-            array(0),
-            array(false),
-        );
+        return [
+            [null],
+            [''],
+            [0],
+            [false],
+        ];
     }
 
     /**
@@ -58,14 +58,14 @@ class FixedBitNotationTest extends \PHPUnit_Framework_TestCase
      */
     public static function decodeIsSameAsEncode(): array
     {
-        return array(
-            array('Foobar'),
-            array('Foobar <with> *crazy</with> stuff*\n &nbsp;'),
-            array(<<<'DATA'
+        return [
+            ['Foobar'],
+            ['Foobar <with> *crazy</with> stuff*\n &nbsp;'],
+            [<<<'DATA'
             multi
             line
 DATA
-            ),
-        );
+            ],
+        ];
     }
 }

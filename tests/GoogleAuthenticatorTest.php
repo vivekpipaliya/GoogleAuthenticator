@@ -76,14 +76,14 @@ class GoogleAuthenticatorTest extends \PHPUnit_Framework_TestCase
      */
     public static function testCheckCodeData(): array
     {
-        return array(
-            array(false, '2012-03-17 22:16:29'),
-            array(true, '2012-03-17 22:16:30'),
-            array(true, '2012-03-17 22:17:00'),
-            array(true, '2012-03-17 22:17:30'),
-            array(false, '2012-03-17 22:18:00'),
-            array(false, 'this date cannot be resolved and results into false'),
-        );
+        return [
+            [false, '2012-03-17 22:16:29'],
+            [true, '2012-03-17 22:16:30'],
+            [true, '2012-03-17 22:17:00'],
+            [true, '2012-03-17 22:17:30'],
+            [false, '2012-03-17 22:18:00'],
+            [false, 'this date cannot be resolved and results into false'],
+        ];
     }
 
     /**

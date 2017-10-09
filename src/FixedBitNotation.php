@@ -150,7 +150,7 @@ final class FixedBitNotation
                     if ($padFinalGroup) {
                         // Array of the lowest common multiples of
                         // $bitsPerCharacter and 8, divided by 8
-                        $lcmMap = array(1 => 1, 2 => 1, 3 => 3, 4 => 1, 5 => 5, 6 => 3, 7 => 7, 8 => 1);
+                        $lcmMap = [1 => 1, 2 => 1, 3 => 3, 4 => 1, 5 => 5, 6 => 3, 7 => 7, 8 => 1];
                         $bytesPerGroup = $lcmMap[$bitsPerCharacter];
                         $pads = $bytesPerGroup * 8 / $bitsPerCharacter
                         - ceil((strlen($rawString) % $bytesPerGroup)
@@ -212,7 +212,7 @@ final class FixedBitNotation
         if ($this->charmap) {
             $charmap = $this->charmap;
         } else {
-            $charmap = array();
+            $charmap = [];
 
             for ($i = 0; $i < $radix; ++$i) {
                 $charmap[$chars[$i]] = $i;
