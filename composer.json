@@ -21,10 +21,10 @@
 
     ],
     "require": {
-        "php": "^7.0"
+        "php": "^7.1"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "~3.2",
+        "symfony/phpunit-bridge": "~3.3",
         "sllh/php-cs-fixer-styleci-bridge": "^2.1"
     },
     "autoload": {
