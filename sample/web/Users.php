@@ -80,7 +80,7 @@ class User
 
     public function isOTP()
     {
-        if (isset($_SESSION['OTP']) && $_SESSION['OTP'] == true) {
+        if (isset($_SESSION['OTP']) && true == $_SESSION['OTP']) {
             return true;
         }
 
@@ -89,7 +89,7 @@ class User
 
     public function isLoggedIn()
     {
-        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true &&
+        if (isset($_SESSION['loggedin']) && true == $_SESSION['loggedin'] &&
             isset($_SESSION['ua']) && $_SESSION['ua'] == $_SERVER['HTTP_USER_AGENT']
         ) {
             return $_SESSION['username'];
