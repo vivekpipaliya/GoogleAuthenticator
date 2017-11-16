@@ -269,7 +269,7 @@ final class FixedBitNotation
 
                 $byte |= $newBits;
 
-                if ($bitsWritten == 8 || $c == $lastNotatedIndex) {
+                if (8 == $bitsWritten || $c == $lastNotatedIndex) {
                     // Byte is ready to be written
                     $rawString .= pack('C', $byte);
 
