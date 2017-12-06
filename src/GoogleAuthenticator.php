@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -126,7 +128,7 @@ final class GoogleAuthenticator
 
         $truncatedHash = $this->hashToInt($hash, $offset) & 0x7FFFFFFF;
 
-        return str_pad($truncatedHash % $this->pinModulo, 6, '0', STR_PAD_LEFT);
+        return str_pad((string) ($truncatedHash % $this->pinModulo), 6, '0', STR_PAD_LEFT);
     }
 
     /**

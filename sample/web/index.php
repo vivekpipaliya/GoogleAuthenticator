@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 ob_start(); //i'm too lazy to check when is sent what ;)
 //set session cookie to be read only via http and not by JavaScript
 ini_set('session.cookie_httponly', 1);
