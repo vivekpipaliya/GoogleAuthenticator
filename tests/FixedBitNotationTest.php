@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -13,12 +15,12 @@ namespace Sonata\GoogleAuthenticator\tests;
 
 use Sonata\GoogleAuthenticator\FixedBitNotation;
 
-class FixedBitNotationTest extends \PHPUnit_Framework_TestCase
+class FixedBitNotationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider decodeGuardData
      */
-    public function testDecodeGuard($input)
+    public function testDecodeGuard($input): void
     {
         $bits = new FixedBitNotation(5);
 
@@ -44,7 +46,7 @@ class FixedBitNotationTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider decodeIsSameAsEncode
      */
-    public function testDecodeIsSameAsEncode($input)
+    public function testDecodeIsSameAsEncode($input): void
     {
         $bits = new FixedBitNotation(5);
 

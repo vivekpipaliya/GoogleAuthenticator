@@ -24,8 +24,7 @@
         "php": "^7.1"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "~3.3",
-        "sllh/php-cs-fixer-styleci-bridge": "^2.1"
+        "symfony/phpunit-bridge": "^3.3 || ^4.0"
     },
     "autoload": {
         "psr-4": {

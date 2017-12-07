@@ -15,9 +15,9 @@ namespace Sonata\GoogleAuthenticator\tests;
 
 use Sonata\GoogleAuthenticator\GoogleQrUrl;
 
-class GoogleQrUrlTest extends \PHPUnit_Framework_TestCase
+class GoogleQrUrlTest extends \PHPUnit\Framework\TestCase
 {
-    public function testGetUrlIssuer()
+    public function testGetUrlIssuer(): void
     {
         // otpauth://totp/FooBar:foo@foobar.org?secret=3DHTQX4GCRKHGS55CJ&issuer=FooBar
         $this->assertEquals(
@@ -26,7 +26,7 @@ class GoogleQrUrlTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetUrlNoIssuer()
+    public function testGetUrlNoIssuer(): void
     {
         // otpauth://totp/foo@foobar.org?secret=3DHTQX4GCRKHGS55CJ&issuer=FooBar
         $this->assertEquals(
@@ -35,48 +35,43 @@ class GoogleQrUrlTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @expectedException \Sonata\GoogleAuthenticator\RuntimeException
-     * @expectedExceptionMessage The issuer name may not contain a double colon (:) and may not be an empty string. Given "".
-     */
-    public function testEmptyIssuer()
+    public function testEmptyIssuer(): void
     {
+        $this->expectException(\Sonata\GoogleAuthenticator\RuntimeException::class);
+        $this->expectExceptionMessage('The issuer name may not contain a double colon (:) and may not be an empty string. Given "".');
+
         GoogleQrUrl::generate('JohnDoe', '3DHTQX4GCRKHGS55CJ', '');
     }
 
-    /**
-     * @expectedException \Sonata\GoogleAuthenticator\RuntimeException
-     * @expectedExceptionMessage The issuer name may not contain a double colon (:) and may not be an empty string. Given "Foo: bar".
-     */
-    public function testInvalidIssuer()
+    public function testInvalidIssuer(): void
     {
+        $this->expectException(\Sonata\GoogleAuthenticator\RuntimeException::class);
+        $this->expectExceptionMessage('The issuer name may not contain a double colon (:) and may not be an empty string. Given "Foo: bar".');
+
         GoogleQrUrl::generate('JohnDoe', '3DHTQX4GCRKHGS55CJ', 'Foo: bar');
     }
 
-    /**
-     * @expectedException \Sonata\GoogleAuthenticator\RuntimeException
-     * @expectedExceptionMessage The account name may not contain a double colon (:) and may not be an empty string. Given "".
-     */
-    public function testEmptyAccountName()
+    public function testEmptyAccountName(): void
     {
+        $this->expectException(\Sonata\GoogleAuthenticator\RuntimeException::class);
+        $this->expectExceptionMessage('The account name may not contain a double colon (:) and may not be an empty string. Given "".');
+
         GoogleQrUrl::generate('', '3DHTQX4GCRKHGS55CJ');
     }
 
-    /**
-     * @expectedException \Sonata\GoogleAuthenticator\RuntimeException
-     * @expectedExceptionMessage The account name may not contain a double colon (:) and may not be an empty string. Given "John: Doe".
-     */
-    public function testInvalidAccountName()
+    public function testInvalidAccountName(): void
     {
+        $this->expectException(\Sonata\GoogleAuthenticator\RuntimeException::class);
+        $this->expectExceptionMessage('The account name may not contain a double colon (:) and may not be an empty string. Given "John: Doe".');
+
         GoogleQrUrl::generate('John: Doe', '3DHTQX4GCRKHGS55CJ', 'Foo: bar');
     }
 
-    /**
-     * @expectedException \Sonata\GoogleAuthenticator\RuntimeException
-     * @expectedExceptionMessage The secret name may not be an empty string.
-     */
-    public function testInvalidSecret()
+    public function testInvalidSecret(): void
     {
+        $this->expectException(\Sonata\GoogleAuthenticator\RuntimeException::class);
+        $this->expectExceptionMessage('The secret name may not be an empty string.');
+
         GoogleQrUrl::generate('John Doe', '');
     }
 }

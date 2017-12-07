@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -13,19 +15,19 @@ namespace Sonata\GoogleAuthenticator\tests;
 
 use Sonata\GoogleAuthenticator\GoogleAuthenticator;
 
-class GoogleAuthenticatorTest extends \PHPUnit_Framework_TestCase
+class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \Sonata\GoogleAuthenticator\GoogleAuthenticator
      */
     protected $helper;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->helper = new GoogleAuthenticator();
     }
 
-    public function testGenerateSecret()
+    public function testGenerateSecret(): void
     {
         $this->assertEquals(
             16,
@@ -38,7 +40,7 @@ class GoogleAuthenticatorTest extends \PHPUnit_Framework_TestCase
      * @expectedDeprecation Passing anything other than null or a DateTimeInterface to $time is deprecated as of 2.0 and will not be possible as of 3.0.
      * @dataProvider testCheckCodeData
      */
-    public function testCheckCodeWithLegacyArguments($expectation, $inputDate)
+    public function testCheckCodeWithLegacyArguments($expectation, $inputDate): void
     {
         $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'));
         $this->assertSame(
@@ -50,7 +52,7 @@ class GoogleAuthenticatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider testCheckCodeData
      */
-    public function testCheckCode($expectation, $inputDate)
+    public function testCheckCode($expectation, $inputDate): void
     {
         $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'));
 
@@ -90,7 +92,7 @@ class GoogleAuthenticatorTest extends \PHPUnit_Framework_TestCase
      * @group legacy
      * @expectedDeprecation Using Sonata\GoogleAuthenticator\GoogleAuthenticator::getUrl() is deprecated as of 2.1 and will be removed in 3.0. Use Sonata\GoogleAuthenticator\GoogleQrUrl::generate() instead.
      */
-    public function testGetUrlIssuer()
+    public function testGetUrlIssuer(): void
     {
         $this->assertEquals(
             'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ffoo%40foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ%26issuer%3DFooBar',
@@ -102,7 +104,7 @@ class GoogleAuthenticatorTest extends \PHPUnit_Framework_TestCase
      * @group legacy
      * @expectedDeprecation Using Sonata\GoogleAuthenticator\GoogleAuthenticator::getUrl() is deprecated as of 2.1 and will be removed in 3.0. Use Sonata\GoogleAuthenticator\GoogleQrUrl::generate() instead.
      */
-    public function testGetUrlNoIssuer()
+    public function testGetUrlNoIssuer(): void
     {
         $this->assertEquals(
             'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ffoo%40foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ',
