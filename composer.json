@@ -25,7 +25,10 @@
         "php": "^7.1"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^3.3 || ^4.0"
+        "symfony/phpunit-bridge": "^4.0"
+    },
+    "config": {
+        "sort-packages": true
     },
     "extra": {
         "branch-alias": {
