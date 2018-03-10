@@ -35,6 +35,11 @@ final class GoogleAuthenticator
     /**
      * @var int
      */
+    private $passCodeLength;
+
+    /**
+     * @var int
+     */
     private $secretLength;
 
     /**
@@ -59,6 +64,7 @@ final class GoogleAuthenticator
      */
     public function __construct(int $passCodeLength = 6, int $secretLength = 10, \DateTimeInterface $now = null)
     {
+        $this->passCodeLength = $passCodeLength;
         $this->secretLength = $secretLength;
         $this->pinModulo = 10 ** $passCodeLength;
         $this->now = $now ?? new \DateTimeImmutable();
@@ -128,7 +134,7 @@ final class GoogleAuthenticator
 
         $truncatedHash = $this->hashToInt($hash, $offset) & 0x7FFFFFFF;
 
-        return str_pad((string) ($truncatedHash % $this->pinModulo), 6, '0', STR_PAD_LEFT);
+        return str_pad((string) ($truncatedHash % $this->pinModulo), $this->passCodeLength, '0', STR_PAD_LEFT);
     }
 
     /**
