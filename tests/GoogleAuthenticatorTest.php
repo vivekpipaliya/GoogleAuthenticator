@@ -88,6 +88,15 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
+    public function testGetCodeReturnsDefinedLength(): void
+    {
+        $authenticator = new GoogleAuthenticator(8, 10, new \DateTime('2012-03-17 22:17:00'));
+
+        for ($a = 0; $a < 1000; ++$a) {
+            $this->assertSame(8, strlen($authenticator->getCode($authenticator->generateSecret())));
+        }
+    }
+
     /**
      * @group legacy
      * @expectedDeprecation Using Sonata\GoogleAuthenticator\GoogleAuthenticator::getUrl() is deprecated as of 2.1 and will be removed in 3.0. Use Sonata\GoogleAuthenticator\GoogleQrUrl::generate() instead.
