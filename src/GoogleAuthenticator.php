@@ -78,24 +78,20 @@ final class GoogleAuthenticator
      */
     public function checkCode($secret, $code): bool
     {
+        $result = 0;
+
         // current period
-        if (hash_equals($this->getCode($secret, $this->now), $code)) {
-            return true;
-        }
+        $result += hash_equals($this->getCode($secret, $this->now), $code);
 
         // previous period, happens if the user was slow to enter or it just crossed over
         $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() - $this->codePeriod));
-        if (hash_equals($this->getCode($secret, $dateTime), $code)) {
-            return true;
-        }
+        $result += hash_equals($this->getCode($secret, $dateTime), $code);
 
         // next period, happens if the user is not completely synced and possibly a few seconds ahead
         $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() + $this->codePeriod));
-        if (hash_equals($this->getCode($secret, $dateTime), $code)) {
-            return true;
-        }
+        $result += hash_equals($this->getCode($secret, $dateTime), $code);
 
-        return false;
+        return $result > 0;
     }
 
     /**
