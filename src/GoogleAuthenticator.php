@@ -78,6 +78,14 @@ final class GoogleAuthenticator
      */
     public function checkCode($secret, $code): bool
     {
+        /**
+         * The result of each comparison is accumulated here instead of using a guard clause
+         * (https://refactoring.com/catalog/replaceNestedConditionalWithGuardClauses.html). This is to implement
+         * constant time comparison to make side-channel attacks harder. See
+         * https://cryptocoding.net/index.php/Coding_rules#Compare_secret_strings_in_constant_time for details.
+         * Each comparison uses hash_equals() instead of an operator to implement constant time equality comparison
+         * for each code.
+         */
         $result = 0;
 
         // current period
