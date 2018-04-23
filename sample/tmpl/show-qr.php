@@ -4,7 +4,7 @@
 
 <p>
 <?php
- $link = GoogleQrUrl::generate($user->getUsername(), $secret, 'GoogleAuthenticatorExample');
+$link = \Sonata\GoogleAuthenticator\GoogleQrUrl::generate($user->getUsername(), $secret, 'GoogleAuthenticatorExample');
 ?>
 
 <a  href="<?php echo $link; ?>"><img style="border: 0; padding:10px" src="<?php echo $link; ?>"/></a>

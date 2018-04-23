@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 include_once __DIR__.'/../src/FixedBitNotation.php';
 include_once __DIR__.'/../src/GoogleAuthenticator.php';
+include_once __DIR__.'/../src/GoogleQrUrl.php';
 
 $secret = 'XVQ2UIGO75XRUKJO';
 $code = '846474';
 
-$g = new \Google\Authenticator\GoogleAuthenticator();
+$g = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
 
 echo 'Current Code is: ';
 echo $g->getCode($secret);
@@ -36,5 +37,5 @@ $secret = $g->generateSecret();
 echo "Get a new Secret: $secret \n";
 echo "The QR Code for this secret (to scan with the Google Authenticator App: \n";
 
-echo \Google\Authenticator\GoogleQrUrl::generate('chregu', $secret, 'GoogleAuthenticatorExample');
+echo \Sonata\GoogleAuthenticator\GoogleQrUrl::generate('chregu', $secret, 'GoogleAuthenticatorExample');
 echo "\n";
