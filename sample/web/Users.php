@@ -116,7 +116,7 @@ class User
 
     public function generateSecret()
     {
-        $g = new GoogleAuthenticator();
+        $g = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
         $secret = $g->generateSecret();
         $this->data['secret'] = $secret;
 
