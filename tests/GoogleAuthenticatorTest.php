@@ -31,7 +31,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(
             16,
-            strlen($this->helper->generateSecret())
+            \strlen($this->helper->generateSecret())
         );
     }
 
@@ -93,7 +93,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
         $authenticator = new GoogleAuthenticator(8, 10, new \DateTime('2012-03-17 22:17:00'));
 
         for ($a = 0; $a < 1000; ++$a) {
-            $this->assertSame(8, strlen($authenticator->getCode($authenticator->generateSecret())));
+            $this->assertSame(8, \strlen($authenticator->getCode($authenticator->generateSecret())));
         }
     }
 

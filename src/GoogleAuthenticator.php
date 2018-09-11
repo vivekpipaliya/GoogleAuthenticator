@@ -112,10 +112,10 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
         $base32 = new FixedBitNotation(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', true, true);
         $secret = $base32->decode($secret);
 
-        $timeForCode = str_pad(pack('N', $timeForCode), 8, chr(0), STR_PAD_LEFT);
+        $timeForCode = str_pad(pack('N', $timeForCode), 8, \chr(0), STR_PAD_LEFT);
 
         $hash = hash_hmac('sha1', $timeForCode, $secret, true);
-        $offset = ord(substr($hash, -1));
+        $offset = \ord(substr($hash, -1));
         $offset &= 0xF;
 
         $truncatedHash = $this->hashToInt($hash, $offset) & 0x7FFFFFFF;
@@ -140,7 +140,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
             __METHOD__
         ), E_USER_DEPRECATED);
 
-        $issuer = func_get_args()[3] ?? null;
+        $issuer = \func_get_args()[3] ?? null;
         $accountName = sprintf('%s@%s', $user, $hostname);
 
         // manually concat the issuer to avoid a change in URL

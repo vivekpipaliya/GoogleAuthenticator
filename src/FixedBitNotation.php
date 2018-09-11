@@ -69,7 +69,7 @@ final class FixedBitNotation
     public function __construct(int $bitsPerCharacter, string $chars = null, bool $rightPadFinalBits = false, bool $padFinalGroup = false, string $padCharacter = '=')
     {
         // Ensure validity of $chars
-        if (!is_string($chars) || ($charLength = strlen($chars)) < 2) {
+        if (!\is_string($chars) || ($charLength = \strlen($chars)) < 2) {
             $chars =
             '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-,';
             $charLength = 64;
@@ -118,7 +118,7 @@ final class FixedBitNotation
     {
         // Unpack string into an array of bytes
         $bytes = unpack('C*', $rawString);
-        $byteCount = count($bytes);
+        $byteCount = \count($bytes);
 
         $encodedString = '';
         $byte = array_shift($bytes);
@@ -155,7 +155,7 @@ final class FixedBitNotation
                         $lcmMap = [1 => 1, 2 => 1, 3 => 3, 4 => 1, 5 => 5, 6 => 3, 7 => 7, 8 => 1];
                         $bytesPerGroup = $lcmMap[$bitsPerCharacter];
                         $pads = $bytesPerGroup * 8 / $bitsPerCharacter
-                        - ceil((strlen($rawString) % $bytesPerGroup)
+                        - ceil((\strlen($rawString) % $bytesPerGroup)
                         * 8 / $bitsPerCharacter);
                         $encodedString .= str_repeat($padCharacter[0], $pads);
                     }
@@ -199,7 +199,7 @@ final class FixedBitNotation
      */
     public function decode($encodedString, $caseSensitive = true, $strict = false): string
     {
-        if (!$encodedString || !is_string($encodedString)) {
+        if (!$encodedString || !\is_string($encodedString)) {
             // Empty string, nothing to decode
             return '';
         }
@@ -224,7 +224,7 @@ final class FixedBitNotation
         }
 
         // The last encoded character is $encodedString[$lastNotatedIndex]
-        $lastNotatedIndex = strlen($encodedString) - 1;
+        $lastNotatedIndex = \strlen($encodedString) - 1;
 
         // Remove trailing padding characters
         while ($encodedString[$lastNotatedIndex] == $padCharacter[0]) {
