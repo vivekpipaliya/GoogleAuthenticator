@@ -227,7 +227,7 @@ final class FixedBitNotation
         $lastNotatedIndex = \strlen($encodedString) - 1;
 
         // Remove trailing padding characters
-        while ($encodedString[$lastNotatedIndex] == $padCharacter[0]) {
+        while ($encodedString[$lastNotatedIndex] === $padCharacter[0]) {
             $encodedString = substr($encodedString, 0, $lastNotatedIndex);
             --$lastNotatedIndex;
         }
@@ -258,7 +258,7 @@ final class FixedBitNotation
                     $newBits = $charmap[$encodedString[$c]] << $bitsNeeded
                     - $bitsPerCharacter;
                     $bitsWritten += $bitsPerCharacter;
-                } elseif ($c != $lastNotatedIndex || $rightPadFinalBits) {
+                } elseif ($c !== $lastNotatedIndex || $rightPadFinalBits) {
                     // Zero or more too many bits to complete a byte;
                     // shift right
                     $newBits = $charmap[$encodedString[$c]] >> $unusedBitCount;
@@ -271,11 +271,11 @@ final class FixedBitNotation
 
                 $byte |= $newBits;
 
-                if (8 == $bitsWritten || $c == $lastNotatedIndex) {
+                if (8 === $bitsWritten || $c === $lastNotatedIndex) {
                     // Byte is ready to be written
                     $rawString .= pack('C', $byte);
 
-                    if ($c != $lastNotatedIndex) {
+                    if ($c !== $lastNotatedIndex) {
                         // Start the next byte
                         $bitsWritten = $unusedBitCount;
                         $byte = ($charmap[$encodedString[$c]]
