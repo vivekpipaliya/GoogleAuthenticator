@@ -20,7 +20,7 @@ class GoogleQrUrlTest extends \PHPUnit\Framework\TestCase
     public function testGetUrlIssuer(): void
     {
         // otpauth://totp/FooBar:foo@foobar.org?secret=3DHTQX4GCRKHGS55CJ&issuer=FooBar
-        $this->assertEquals(
+        $this->assertSame(
             'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth%3A%2F%2Ftotp%2FFooBar%3AJohn%20Doe%3Fsecret%3D3DHTQX4GCRKHGS55CJ%26issuer%3DFooBar',
             GoogleQrUrl::generate('John Doe', '3DHTQX4GCRKHGS55CJ', 'FooBar')
         );
@@ -29,7 +29,7 @@ class GoogleQrUrlTest extends \PHPUnit\Framework\TestCase
     public function testGetUrlNoIssuer(): void
     {
         // otpauth://totp/foo@foobar.org?secret=3DHTQX4GCRKHGS55CJ&issuer=FooBar
-        $this->assertEquals(
+        $this->assertSame(
             'https://chart.googleapis.com/chart?chs=400x400&chld=M|0&cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ffoo%40foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ',
             GoogleQrUrl::generate('foo@foobar.org', '3DHTQX4GCRKHGS55CJ', null, 400)
         );
