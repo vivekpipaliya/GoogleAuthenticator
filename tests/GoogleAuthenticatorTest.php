@@ -104,7 +104,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
     public function testGetUrlIssuer(): void
     {
         $this->assertSame(
-            'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ffoo%40foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ%26issuer%3DFooBar',
+            'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=otpauth%3A%2F%2Ftotp%2Ffoo%40foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ&ecc=M%26issuer%3DFooBar',
             $this->helper->getUrl('foo', 'foobar.org', '3DHTQX4GCRKHGS55CJ', 'FooBar')
         );
     }
@@ -116,7 +116,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
     public function testGetUrlNoIssuer(): void
     {
         $this->assertSame(
-            'https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ffoo%40foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ',
+            'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=otpauth%3A%2F%2Ftotp%2Ffoo%40foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ&ecc=M',
             $this->helper->getUrl('foo', 'foobar.org', '3DHTQX4GCRKHGS55CJ')
         );
     }
