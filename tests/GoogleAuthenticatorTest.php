@@ -113,8 +113,8 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
     public static function testCheckCodeCustomPeriodData(): array
     {
         return [
-            [false, '2012-03-17 22:11:59'],
-            [true, '2012-03-17 22:12:00'],
+            [false, '2012-03-17 22:16:29'],
+            [true, '2012-03-17 22:16:30'],
             [true, '2012-03-17 22:17:00'],
             [true, '2012-03-17 22:22:00'],
             [false, '2012-03-17 22:23:00'],

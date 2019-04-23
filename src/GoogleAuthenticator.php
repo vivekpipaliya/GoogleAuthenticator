@@ -44,8 +44,14 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
     private $codePeriod;
 
     /**
+     * @var int
+     */
+    private $bufferPeriod = 30;
+
+    /**
      * @param int                     $passCodeLength
      * @param int                     $secretLength
+     * @param int                     $codePeriod
      * @param \DateTimeInterface|null $now
      */
     public function __construct(int $passCodeLength = 6, int $secretLength = 10, int $codePeriod = 30, \DateTimeInterface $now = null)
@@ -53,6 +59,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
         $this->passCodeLength = $passCodeLength;
         $this->secretLength = $secretLength;
         $this->codePeriod = $codePeriod;
+        $this->bufferPeriod = $codePeriod < $this->bufferPeriod ? $codePeriod : $this->bufferPeriod;
         $this->pinModulo = 10 ** $passCodeLength;
         $this->now = $now ?? new \DateTimeImmutable();
     }
@@ -60,29 +67,27 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
     /**
      * @param string $secret
      * @param string $code
+     * @param int $discrepancy
      */
-    public function checkCode($secret, $code): bool
+    public function checkCode($secret, $code, $discrepancy = 1): bool
     {
         /**
-         * The result of each comparison is accumulated here instead of using a guard clause
+         * Discrepancy is the factor of bufferPeriods allowed on either side of the given codePeriod.
+         *
+         * The result of each comparison is stored as a timestamp here instead of using a guard clause
          * (https://refactoring.com/catalog/replaceNestedConditionalWithGuardClauses.html). This is to implement
          * constant time comparison to make side-channel attacks harder. See
          * https://cryptocoding.net/index.php/Coding_rules#Compare_secret_strings_in_constant_time for details.
          * Each comparison uses hash_equals() instead of an operator to implement constant time equality comparison
          * for each code.
          */
+        $bufferPeriods = floor($this->codePeriod / $this->bufferPeriod);
+
         $result = 0;
-
-        // current period
-        $result += hash_equals($this->getCode($secret, $this->now), $code);
-
-        // previous period, happens if the user was slow to enter or it just crossed over
-        $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() - $this->codePeriod));
-        $result += hash_equals($this->getCode($secret, $dateTime), $code);
-
-        // next period, happens if the user is not completely synced and possibly a few seconds ahead
-        $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() + $this->codePeriod));
-        $result += hash_equals($this->getCode($secret, $dateTime), $code);
+        for ($i = -$discrepancy; $i <= $bufferPeriods + $discrepancy; $i++) {
+            $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() + ($i * $this->bufferPeriod)));
+            $result = hash_equals($this->getCode($secret, $dateTime), $code) ? $dateTime->getTimestamp() : $result;
+        }
 
         return $result > 0;
     }
@@ -100,7 +105,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
         }
 
         if ($time instanceof \DateTimeInterface) {
-            $timeForCode = floor($time->getTimestamp() / $this->codePeriod);
+            $timeForCode = floor($time->getTimestamp() / $this->bufferPeriod);
         } else {
             @trigger_error(
                 'Passing anything other than null or a DateTimeInterface to $time is deprecated as of 2.0 '.
