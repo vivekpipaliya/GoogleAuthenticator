@@ -69,6 +69,25 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @dataProvider testCheckCodeDiscrepancyData
+     */
+    public function testCheckCodeDiscrepancy($expectation, $inputDate): void
+    {
+        $authenticator = new GoogleAuthenticator(6, 10, 30, new \DateTime('2012-03-17 22:17:00'));
+
+        try {
+            $datetime = new \DateTime($inputDate);
+        } catch (\Exception $e) {
+            return;
+        }
+
+        $this->assertSame(
+            $expectation,
+            $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime), 0)
+        );
+    }
+
+    /**
      * @dataProvider testCheckCodeCustomPeriodData
      */
     public function testCheckCodeCustomPeriod($expectation, $inputDate): void
@@ -84,6 +103,25 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime))
+        );
+    }
+
+    /**
+     * @dataProvider testCheckCodeCustomPeriodDiscrepancyData
+     */
+    public function testCheckCodeCustomPeriodDiscrepancy($expectation, $inputDate): void
+    {
+        $authenticator = new GoogleAuthenticator(6, 10, 300, new \DateTime('2012-03-17 22:17:00'));
+
+        try {
+            $datetime = new \DateTime($inputDate);
+        } catch (\Exception $e) {
+            return;
+        }
+
+        $this->assertSame(
+            $expectation,
+            $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime), 0)
         );
     }
 
@@ -110,6 +148,20 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
     /**
      * @return array
      */
+    public static function testCheckCodeDiscrepancyData(): array
+    {
+        return [
+            [false, '2012-03-17 22:16:59'],
+            [true, '2012-03-17 22:17:00'],
+            [true, '2012-03-17 22:17:29'],
+            [false, '2012-03-17 22:17:30'],
+            [false, 'this date cannot be resolved and results into false'],
+        ];
+    }
+
+    /**
+     * @return array
+     */
     public static function testCheckCodeCustomPeriodData(): array
     {
         return [
@@ -118,6 +170,20 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
             [true, '2012-03-17 22:17:00'],
             [true, '2012-03-17 22:22:00'],
             [false, '2012-03-17 22:23:00'],
+            [false, 'this date cannot be resolved and results into false'],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function testCheckCodeCustomPeriodDiscrepancyData(): array
+    {
+        return [
+            [false, '2012-03-17 22:16:59'],
+            [true, '2012-03-17 22:17:00'],
+            [true, '2012-03-17 22:21:59'],
+            [false, '2012-03-17 22:22:00'],
             [false, 'this date cannot be resolved and results into false'],
         ];
     }
