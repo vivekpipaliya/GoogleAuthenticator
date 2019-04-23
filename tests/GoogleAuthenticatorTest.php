@@ -42,7 +42,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testCheckCodeWithLegacyArguments($expectation, $inputDate): void
     {
-        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'));
+        $authenticator = new GoogleAuthenticator(6, 10, 30, new \DateTime('2012-03-17 22:17:00'));
         $this->assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', strtotime($inputDate) / 30))
@@ -54,7 +54,26 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testCheckCode($expectation, $inputDate): void
     {
-        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'));
+        $authenticator = new GoogleAuthenticator(6, 10, 30, new \DateTime('2012-03-17 22:17:00'));
+
+        try {
+            $datetime = new \DateTime($inputDate);
+        } catch (\Exception $e) {
+            return;
+        }
+
+        $this->assertSame(
+            $expectation,
+            $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime))
+        );
+    }
+
+    /**
+     * @dataProvider testCheckCodeCustomPeriodData
+     */
+    public function testCheckCodeCustomPeriod($expectation, $inputDate): void
+    {
+        $authenticator = new GoogleAuthenticator(6, 10, 300, new \DateTime('2012-03-17 22:17:00'));
 
         try {
             $datetime = new \DateTime($inputDate);
@@ -84,6 +103,21 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
             [true, '2012-03-17 22:17:00'],
             [true, '2012-03-17 22:17:30'],
             [false, '2012-03-17 22:18:00'],
+            [false, 'this date cannot be resolved and results into false'],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function testCheckCodeCustomPeriodData(): array
+    {
+        return [
+            [false, '2012-03-17 22:16:29'],
+            [true, '2012-03-17 22:16:30'],
+            [true, '2012-03-17 22:17:00'],
+            [true, '2012-03-17 22:22:00'],
+            [false, '2012-03-17 22:23:00'],
             [false, 'this date cannot be resolved and results into false'],
         ];
     }
