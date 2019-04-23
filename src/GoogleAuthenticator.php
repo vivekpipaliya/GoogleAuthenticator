@@ -46,7 +46,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
     /**
      * @var int
      */
-    private $bufferPeriod = 30;
+    private $periodSize = 30;
 
     /**
      * @param int                     $passCodeLength
@@ -56,10 +56,16 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
      */
     public function __construct(int $passCodeLength = 6, int $secretLength = 10, \DateTimeInterface $now = null, int $codePeriod = 30)
     {
+        /*
+         * codePeriod is the length of time in seconds that the code is valid.
+         * periodSize is the length of a period to calculate periods since Unix epoch.
+         * periodSize cannot be larger than the codePeriod.
+         */
+
         $this->passCodeLength = $passCodeLength;
         $this->secretLength = $secretLength;
         $this->codePeriod = $codePeriod;
-        $this->bufferPeriod = $codePeriod < $this->bufferPeriod ? $codePeriod : $this->bufferPeriod;
+        $this->periodSize = $codePeriod < $this->periodSize ? $codePeriod : $this->periodSize;
         $this->pinModulo = 10 ** $passCodeLength;
         $this->now = $now ?? new \DateTimeImmutable();
     }
@@ -72,7 +78,10 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
     public function checkCode($secret, $code, $discrepancy = 1): bool
     {
         /**
-         * Discrepancy is the factor of bufferPeriods allowed on either side of the given codePeriod.
+         * Discrepancy is the factor of periodSize ($discrepancy * $periodSize) allowed on either side of the
+         * given codePeriod. For example, if a code with codePeriod = 60 is generated at 10:00:00, a discrepancy
+         * of 1 will allow a periodSize (30) seconds on either side of the codePeriod resulting in a valid code
+         * from 09:59:30 - 10:01:29.
          *
          * The result of each comparison is stored as a timestamp here instead of using a guard clause
          * (https://refactoring.com/catalog/replaceNestedConditionalWithGuardClauses.html). This is to implement
@@ -81,11 +90,11 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
          * Each comparison uses hash_equals() instead of an operator to implement constant time equality comparison
          * for each code.
          */
-        $bufferPeriods = floor($this->codePeriod / $this->bufferPeriod);
+        $periods = floor($this->codePeriod / $this->periodSize);
 
         $result = 0;
-        for ($i = -$discrepancy; $i < $bufferPeriods + $discrepancy; ++$i) {
-            $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() + ($i * $this->bufferPeriod)));
+        for ($i = -$discrepancy; $i < $periods + $discrepancy; ++$i) {
+            $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() + ($i * $this->periodSize)));
             $result = hash_equals($this->getCode($secret, $dateTime), $code) ? $dateTime->getTimestamp() : $result;
         }
 
@@ -105,7 +114,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
         }
 
         if ($time instanceof \DateTimeInterface) {
-            $timeForCode = floor($time->getTimestamp() / $this->bufferPeriod);
+            $timeForCode = floor($time->getTimestamp() / $this->periodSize);
         } else {
             @trigger_error(
                 'Passing anything other than null or a DateTimeInterface to $time is deprecated as of 2.0 '.
