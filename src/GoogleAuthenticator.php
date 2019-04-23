@@ -51,13 +51,12 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
     /**
      * @param int                     $passCodeLength
      * @param int                     $secretLength
-     * @param int                     $codePeriod
      * @param \DateTimeInterface|null $now
      */
     public function __construct(int $passCodeLength = 6, int $secretLength = 10, \DateTimeInterface $now = null, int $codePeriod = 30)
     {
         /*
-         * codePeriod is the length of time in seconds that the code is valid.
+         * codePeriod is the duration in seconds that the code is valid.
          * periodSize is the length of a period to calculate periods since Unix epoch.
          * periodSize cannot be larger than the codePeriod.
          */
@@ -80,8 +79,8 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
         /**
          * Discrepancy is the factor of periodSize ($discrepancy * $periodSize) allowed on either side of the
          * given codePeriod. For example, if a code with codePeriod = 60 is generated at 10:00:00, a discrepancy
-         * of 1 will allow a periodSize (30) seconds on either side of the codePeriod resulting in a valid code
-         * from 09:59:30 - 10:01:29.
+         * of 1 will allow a periodSize of 30 seconds on either side of the codePeriod resulting in a valid code
+         * from 09:59:30 to 10:01:29.
          *
          * The result of each comparison is stored as a timestamp here instead of using a guard clause
          * (https://refactoring.com/catalog/replaceNestedConditionalWithGuardClauses.html). This is to implement

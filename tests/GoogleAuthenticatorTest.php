@@ -56,12 +56,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
     {
         $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 30);
 
-        try {
-            $datetime = new \DateTime($inputDate);
-        } catch (\Exception $e) {
-            return;
-        }
-
+        $datetime = new \DateTime($inputDate);
         $this->assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime))
@@ -75,12 +70,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
     {
         $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 30);
 
-        try {
-            $datetime = new \DateTime($inputDate);
-        } catch (\Exception $e) {
-            return;
-        }
-
+        $datetime = new \DateTime($inputDate);
         $this->assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime), 0)
@@ -94,12 +84,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
     {
         $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 300);
 
-        try {
-            $datetime = new \DateTime($inputDate);
-        } catch (\Exception $e) {
-            return;
-        }
-
+        $datetime = new \DateTime($inputDate);
         $this->assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime))
@@ -113,12 +98,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
     {
         $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 300);
 
-        try {
-            $datetime = new \DateTime($inputDate);
-        } catch (\Exception $e) {
-            return;
-        }
-
+        $datetime = new \DateTime($inputDate);
         $this->assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime), 0)
@@ -141,7 +121,6 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
             [true, '2012-03-17 22:17:00'],
             [true, '2012-03-17 22:17:30'],
             [false, '2012-03-17 22:18:00'],
-            [false, 'this date cannot be resolved and results into false'],
         ];
     }
 
@@ -155,7 +134,6 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
             [true, '2012-03-17 22:17:00'],
             [true, '2012-03-17 22:17:29'],
             [false, '2012-03-17 22:17:30'],
-            [false, 'this date cannot be resolved and results into false'],
         ];
     }
 
@@ -170,7 +148,6 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
             [true, '2012-03-17 22:17:00'],
             [true, '2012-03-17 22:22:00'],
             [false, '2012-03-17 22:23:00'],
-            [false, 'this date cannot be resolved and results into false'],
         ];
     }
 
@@ -184,7 +161,6 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
             [true, '2012-03-17 22:17:00'],
             [true, '2012-03-17 22:21:59'],
             [false, '2012-03-17 22:22:00'],
-            [false, 'this date cannot be resolved and results into false'],
         ];
     }
 
