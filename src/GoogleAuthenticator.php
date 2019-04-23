@@ -44,11 +44,6 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
     private $codePeriod;
 
     /**
-     * @var int
-     */
-    private $bufferPeriod = 30;
-
-    /**
      * @param int                     $passCodeLength
      * @param int                     $secretLength
      * @param \DateTimeInterface|null $now
@@ -82,11 +77,11 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
         $result += hash_equals($this->getCode($secret, $this->now), $code);
 
         // previous period, happens if the user was slow to enter or it just crossed over
-        $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() - $this->bufferPeriod));
+        $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() - $this->codePeriod));
         $result += hash_equals($this->getCode($secret, $dateTime), $code);
 
         // next period, happens if the user is not completely synced and possibly a few seconds ahead
-        $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() + $this->bufferPeriod));
+        $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() + $this->codePeriod));
         $result += hash_equals($this->getCode($secret, $dateTime), $code);
 
         return $result > 0;
