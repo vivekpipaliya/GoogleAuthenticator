@@ -67,7 +67,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
     /**
      * @param string $secret
      * @param string $code
-     * @param int $discrepancy
+     * @param int    $discrepancy
      */
     public function checkCode($secret, $code, $discrepancy = 1): bool
     {
@@ -84,7 +84,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
         $bufferPeriods = floor($this->codePeriod / $this->bufferPeriod) - 1;
 
         $result = 0;
-        for ($i = -$discrepancy; $i <= $bufferPeriods + $discrepancy; $i++) {
+        for ($i = -$discrepancy; $i <= $bufferPeriods + $discrepancy; ++$i) {
             $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() + ($i * $this->bufferPeriod)));
             $result = hash_equals($this->getCode($secret, $dateTime), $code) ? $dateTime->getTimestamp() : $result;
         }
