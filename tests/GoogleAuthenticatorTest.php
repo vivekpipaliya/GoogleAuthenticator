@@ -42,7 +42,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testCheckCodeWithLegacyArguments($expectation, $inputDate): void
     {
-        $authenticator = new GoogleAuthenticator(6, 10, 30, new \DateTime('2012-03-17 22:17:00'));
+        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 30);
         $this->assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', strtotime($inputDate) / 30))
@@ -54,7 +54,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testCheckCode($expectation, $inputDate): void
     {
-        $authenticator = new GoogleAuthenticator(6, 10, 30, new \DateTime('2012-03-17 22:17:00'));
+        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 30);
 
         try {
             $datetime = new \DateTime($inputDate);
@@ -73,7 +73,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testCheckCodeDiscrepancy($expectation, $inputDate): void
     {
-        $authenticator = new GoogleAuthenticator(6, 10, 30, new \DateTime('2012-03-17 22:17:00'));
+        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 30);
 
         try {
             $datetime = new \DateTime($inputDate);
@@ -92,7 +92,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testCheckCodeCustomPeriod($expectation, $inputDate): void
     {
-        $authenticator = new GoogleAuthenticator(6, 10, 300, new \DateTime('2012-03-17 22:17:00'));
+        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 300);
 
         try {
             $datetime = new \DateTime($inputDate);
@@ -111,7 +111,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testCheckCodeCustomPeriodDiscrepancy($expectation, $inputDate): void
     {
-        $authenticator = new GoogleAuthenticator(6, 10, 300, new \DateTime('2012-03-17 22:17:00'));
+        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 300);
 
         try {
             $datetime = new \DateTime($inputDate);
@@ -190,7 +190,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
 
     public function testGetCodeReturnsDefinedLength(): void
     {
-        $authenticator = new GoogleAuthenticator(8, 10, 30, new \DateTime('2012-03-17 22:17:00'));
+        $authenticator = new GoogleAuthenticator(8, 10, new \DateTime('2012-03-17 22:17:00'), 30);
 
         for ($a = 0; $a < 1000; ++$a) {
             $this->assertSame(8, \strlen($authenticator->getCode($authenticator->generateSecret())));
