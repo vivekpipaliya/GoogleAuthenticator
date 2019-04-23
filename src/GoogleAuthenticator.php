@@ -81,7 +81,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
          * Each comparison uses hash_equals() instead of an operator to implement constant time equality comparison
          * for each code.
          */
-        $bufferPeriods = floor($this->codePeriod / $this->bufferPeriod);
+        $bufferPeriods = floor($this->codePeriod / $this->bufferPeriod) - 1;
 
         $result = 0;
         for ($i = -$discrepancy; $i <= $bufferPeriods + $discrepancy; $i++) {
