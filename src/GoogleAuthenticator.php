@@ -36,7 +36,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
     /**
      * @var \DateTimeInterface
      */
-    private $now;
+    private $instanceTime;
 
     /**
      * @var int
@@ -51,9 +51,9 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
     /**
      * @param int                     $passCodeLength
      * @param int                     $secretLength
-     * @param \DateTimeInterface|null $now
+     * @param \DateTimeInterface|null $instanceTime
      */
-    public function __construct(int $passCodeLength = 6, int $secretLength = 10, \DateTimeInterface $now = null, int $codePeriod = 30)
+    public function __construct(int $passCodeLength = 6, int $secretLength = 10, \DateTimeInterface $instanceTime = null, int $codePeriod = 30)
     {
         /*
          * codePeriod is the duration in seconds that the code is valid.
@@ -66,7 +66,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
         $this->codePeriod = $codePeriod;
         $this->periodSize = $codePeriod < $this->periodSize ? $codePeriod : $this->periodSize;
         $this->pinModulo = 10 ** $passCodeLength;
-        $this->now = $now ?? new \DateTimeImmutable();
+        $this->instanceTime = $instanceTime ?? new \DateTimeImmutable();
     }
 
     /**
@@ -93,7 +93,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
 
         $result = 0;
         for ($i = -$discrepancy; $i < $periods + $discrepancy; ++$i) {
-            $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() + ($i * $this->periodSize)));
+            $dateTime = new \DateTimeImmutable('@'.($this->instanceTime->getTimestamp() + ($i * $this->periodSize)));
             $result = hash_equals($this->getCode($secret, $dateTime), $code) ? $dateTime->getTimestamp() : $result;
         }
 
@@ -109,7 +109,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
     public function getCode($secret, /* \DateTimeInterface */$time = null): string
     {
         if (null === $time) {
-            $time = $this->now;
+            $time = $this->instanceTime;
         }
 
         if ($time instanceof \DateTimeInterface) {
