@@ -110,57 +110,46 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
      * to 22:17:00 to verify if the code was perhaps the previous or next 30
      * seconds. This ensures that slow entries or time delays are not causing
      * problems.
-     *
-     * @return array
      */
     public static function testCheckCodeData(): array
     {
         return [
-            [false, '2012-03-17 22:16:29'],
-            [true, '2012-03-17 22:16:30'],
-            [true, '2012-03-17 22:17:00'],
-            [true, '2012-03-17 22:17:30'],
-            [false, '2012-03-17 22:18:00'],
+            '1 second before valid interval' => [false, '2012-03-17 22:16:29'],
+            'beginning of interval' => [true, '2012-03-17 22:16:30'],
+            'same as code create time' => [true, '2012-03-17 22:17:00'],
+            'end of interval' => [true, '2012-03-17 22:17:59'],
+            '1 second after valid interval' => [false, '2012-03-17 22:18:00'],
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function testCheckCodeDiscrepancyData(): array
     {
         return [
-            [false, '2012-03-17 22:16:59'],
-            [true, '2012-03-17 22:17:00'],
-            [true, '2012-03-17 22:17:29'],
-            [false, '2012-03-17 22:17:30'],
+            '1 second before valid interval' => [false, '2012-03-17 22:16:59'],
+            'beginning of interval' => [true, '2012-03-17 22:17:00'],
+            'end of interval' => [true, '2012-03-17 22:17:29'],
+            '1 second after valid interval' => [false, '2012-03-17 22:17:30'],
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function testCheckCodeCustomPeriodData(): array
     {
         return [
-            [false, '2012-03-17 22:16:29'],
-            [true, '2012-03-17 22:16:30'],
-            [true, '2012-03-17 22:17:00'],
-            [true, '2012-03-17 22:22:00'],
-            [false, '2012-03-17 22:23:00'],
+            '1 second before valid interval' => [false, '2012-03-17 22:16:29'],
+            'beginning of interval' => [true, '2012-03-17 22:16:30'],
+            'same as code create time' => [true, '2012-03-17 22:17:00'],
+            'end of interval' => [true, '2012-03-17 22:22:29'],
+            '1 second after valid interval' => [false, '2012-03-17 22:22:30'],
         ];
     }
 
-    /**
-     * @return array
-     */
     public static function testCheckCodeCustomPeriodDiscrepancyData(): array
     {
         return [
-            [false, '2012-03-17 22:16:59'],
-            [true, '2012-03-17 22:17:00'],
-            [true, '2012-03-17 22:21:59'],
-            [false, '2012-03-17 22:22:00'],
+            '1 second before valid interval' => [false, '2012-03-17 22:16:59'],
+            'beginning of interval' => [true, '2012-03-17 22:17:00'],
+            'end of interval' => [true, '2012-03-17 22:21:59'],
+            '1 second after valid interval' => [false, '2012-03-17 22:22:00'],
         ];
     }
 
