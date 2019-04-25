@@ -135,21 +135,21 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
     public static function testCheckCodeCustomPeriodData(): array
     {
         return [
-            '1 second before valid interval' => [false, '2012-03-17 22:16:29'],
-            'beginning of interval' => [true, '2012-03-17 22:16:30'],
+            '1 second before valid interval' => [false, '2012-03-17 22:11:59'],
+            'beginning of interval' => [true, '2012-03-17 22:12:00'],
             'same as code create time' => [true, '2012-03-17 22:17:00'],
-            'end of interval' => [true, '2012-03-17 22:22:29'],
-            '1 second after valid interval' => [false, '2012-03-17 22:22:30'],
+            'end of interval' => [true, '2012-03-17 22:17:59'],
+            '1 second after valid interval' => [false, '2012-03-17 22:18:00'],
         ];
     }
 
     public static function testCheckCodeCustomPeriodDiscrepancyData(): array
     {
         return [
-            '1 second before valid interval' => [false, '2012-03-17 22:16:59'],
-            'beginning of interval' => [true, '2012-03-17 22:17:00'],
-            'end of interval' => [true, '2012-03-17 22:21:59'],
-            '1 second after valid interval' => [false, '2012-03-17 22:22:00'],
+            '1 second before valid interval' => [false, '2012-03-17 22:12:29'],
+            'beginning of interval' => [true, '2012-03-17 22:12:30'],
+            'end of interval' => [true, '2012-03-17 22:17:29'],
+            '1 second after valid interval' => [false, '2012-03-17 22:17:30'],
         ];
     }
 

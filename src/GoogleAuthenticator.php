@@ -93,7 +93,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
 
         $result = 0;
         for ($i = -$discrepancy; $i < $periods + $discrepancy; ++$i) {
-            $dateTime = new \DateTimeImmutable('@'.($this->instanceTime->getTimestamp() + ($i * $this->periodSize)));
+            $dateTime = new \DateTimeImmutable('@'.($this->instanceTime->getTimestamp() - ($i * $this->periodSize)));
             $result = hash_equals($this->getCode($secret, $dateTime), $code) ? $dateTime->getTimestamp() : $result;
         }
 
