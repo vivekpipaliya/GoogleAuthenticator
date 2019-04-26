@@ -42,7 +42,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testCheckCodeWithLegacyArguments($expectation, $inputDate): void
     {
-        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'));
+        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 30);
         $this->assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', strtotime($inputDate) / 30))
@@ -54,17 +54,54 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testCheckCode($expectation, $inputDate): void
     {
-        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'));
+        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 30);
 
-        try {
-            $datetime = new \DateTime($inputDate);
-        } catch (\Exception $e) {
-            return;
-        }
-
+        $datetime = new \DateTime($inputDate);
         $this->assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime))
+        );
+    }
+
+    /**
+     * @dataProvider testCheckCodeDiscrepancyData
+     */
+    public function testCheckCodeDiscrepancy($expectation, $inputDate): void
+    {
+        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 30);
+
+        $datetime = new \DateTime($inputDate);
+        $this->assertSame(
+            $expectation,
+            $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime), 0)
+        );
+    }
+
+    /**
+     * @dataProvider testCheckCodeCustomPeriodData
+     */
+    public function testCheckCodeCustomPeriod($expectation, $inputDate): void
+    {
+        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 300);
+
+        $datetime = new \DateTime($inputDate);
+        $this->assertSame(
+            $expectation,
+            $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime))
+        );
+    }
+
+    /**
+     * @dataProvider testCheckCodeCustomPeriodDiscrepancyData
+     */
+    public function testCheckCodeCustomPeriodDiscrepancy($expectation, $inputDate): void
+    {
+        $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 300);
+
+        $datetime = new \DateTime($inputDate);
+        $this->assertSame(
+            $expectation,
+            $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime), 0)
         );
     }
 
@@ -73,24 +110,52 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
      * to 22:17:00 to verify if the code was perhaps the previous or next 30
      * seconds. This ensures that slow entries or time delays are not causing
      * problems.
-     *
-     * @return array
      */
     public static function testCheckCodeData(): array
     {
         return [
-            [false, '2012-03-17 22:16:29'],
-            [true, '2012-03-17 22:16:30'],
-            [true, '2012-03-17 22:17:00'],
-            [true, '2012-03-17 22:17:30'],
-            [false, '2012-03-17 22:18:00'],
-            [false, 'this date cannot be resolved and results into false'],
+            '1 second before valid interval' => [false, '2012-03-17 22:16:29'],
+            'beginning of interval' => [true, '2012-03-17 22:16:30'],
+            'same as code create time' => [true, '2012-03-17 22:17:00'],
+            'end of interval' => [true, '2012-03-17 22:17:59'],
+            '1 second after valid interval' => [false, '2012-03-17 22:18:00'],
+        ];
+    }
+
+    public static function testCheckCodeDiscrepancyData(): array
+    {
+        return [
+            '1 second before valid interval' => [false, '2012-03-17 22:16:59'],
+            'beginning of interval' => [true, '2012-03-17 22:17:00'],
+            'end of interval' => [true, '2012-03-17 22:17:29'],
+            '1 second after valid interval' => [false, '2012-03-17 22:17:30'],
+        ];
+    }
+
+    public static function testCheckCodeCustomPeriodData(): array
+    {
+        return [
+            '1 second before valid interval' => [false, '2012-03-17 22:11:59'],
+            'beginning of interval' => [true, '2012-03-17 22:12:00'],
+            'same as code create time' => [true, '2012-03-17 22:17:00'],
+            'end of interval' => [true, '2012-03-17 22:17:59'],
+            '1 second after valid interval' => [false, '2012-03-17 22:18:00'],
+        ];
+    }
+
+    public static function testCheckCodeCustomPeriodDiscrepancyData(): array
+    {
+        return [
+            '1 second before valid interval' => [false, '2012-03-17 22:12:29'],
+            'beginning of interval' => [true, '2012-03-17 22:12:30'],
+            'end of interval' => [true, '2012-03-17 22:17:29'],
+            '1 second after valid interval' => [false, '2012-03-17 22:17:30'],
         ];
     }
 
     public function testGetCodeReturnsDefinedLength(): void
     {
-        $authenticator = new GoogleAuthenticator(8, 10, new \DateTime('2012-03-17 22:17:00'));
+        $authenticator = new GoogleAuthenticator(8, 10, new \DateTime('2012-03-17 22:17:00'), 30);
 
         for ($a = 0; $a < 1000; ++$a) {
             $this->assertSame(8, \strlen($authenticator->getCode($authenticator->generateSecret())));

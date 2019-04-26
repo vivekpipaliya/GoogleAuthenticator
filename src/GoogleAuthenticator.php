@@ -36,52 +36,66 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
     /**
      * @var \DateTimeInterface
      */
-    private $now;
+    private $instanceTime;
 
     /**
      * @var int
      */
-    private $codePeriod = 30;
+    private $codePeriod;
+
+    /**
+     * @var int
+     */
+    private $periodSize = 30;
 
     /**
      * @param int                     $passCodeLength
      * @param int                     $secretLength
-     * @param \DateTimeInterface|null $now
+     * @param \DateTimeInterface|null $instanceTime
      */
-    public function __construct(int $passCodeLength = 6, int $secretLength = 10, \DateTimeInterface $now = null)
+    public function __construct(int $passCodeLength = 6, int $secretLength = 10, \DateTimeInterface $instanceTime = null, int $codePeriod = 30)
     {
+        /*
+         * codePeriod is the duration in seconds that the code is valid.
+         * periodSize is the length of a period to calculate periods since Unix epoch.
+         * periodSize cannot be larger than the codePeriod.
+         */
+
         $this->passCodeLength = $passCodeLength;
         $this->secretLength = $secretLength;
+        $this->codePeriod = $codePeriod;
+        $this->periodSize = $codePeriod < $this->periodSize ? $codePeriod : $this->periodSize;
         $this->pinModulo = 10 ** $passCodeLength;
-        $this->now = $now ?? new \DateTimeImmutable();
+        $this->instanceTime = $instanceTime ?? new \DateTimeImmutable();
     }
 
     /**
      * @param string $secret
      * @param string $code
+     * @param int    $discrepancy
      */
-    public function checkCode($secret, $code): bool
+    public function checkCode($secret, $code, $discrepancy = 1): bool
     {
         /**
-         * The result of each comparison is accumulated here instead of using a guard clause
+         * Discrepancy is the factor of periodSize ($discrepancy * $periodSize) allowed on either side of the
+         * given codePeriod. For example, if a code with codePeriod = 60 is generated at 10:00:00, a discrepancy
+         * of 1 will allow a periodSize of 30 seconds on either side of the codePeriod resulting in a valid code
+         * from 09:59:30 to 10:01:29.
+         *
+         * The result of each comparison is stored as a timestamp here instead of using a guard clause
          * (https://refactoring.com/catalog/replaceNestedConditionalWithGuardClauses.html). This is to implement
          * constant time comparison to make side-channel attacks harder. See
          * https://cryptocoding.net/index.php/Coding_rules#Compare_secret_strings_in_constant_time for details.
          * Each comparison uses hash_equals() instead of an operator to implement constant time equality comparison
          * for each code.
          */
+        $periods = floor($this->codePeriod / $this->periodSize);
+
         $result = 0;
-
-        // current period
-        $result += hash_equals($this->getCode($secret, $this->now), $code);
-
-        // previous period, happens if the user was slow to enter or it just crossed over
-        $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() - $this->codePeriod));
-        $result += hash_equals($this->getCode($secret, $dateTime), $code);
-
-        // next period, happens if the user is not completely synced and possibly a few seconds ahead
-        $dateTime = new \DateTimeImmutable('@'.($this->now->getTimestamp() + $this->codePeriod));
-        $result += hash_equals($this->getCode($secret, $dateTime), $code);
+        for ($i = -$discrepancy; $i < $periods + $discrepancy; ++$i) {
+            $dateTime = new \DateTimeImmutable('@'.($this->instanceTime->getTimestamp() - ($i * $this->periodSize)));
+            $result = hash_equals($this->getCode($secret, $dateTime), $code) ? $dateTime->getTimestamp() : $result;
+        }
 
         return $result > 0;
     }
@@ -95,11 +109,11 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
     public function getCode($secret, /* \DateTimeInterface */$time = null): string
     {
         if (null === $time) {
-            $time = $this->now;
+            $time = $this->instanceTime;
         }
 
         if ($time instanceof \DateTimeInterface) {
-            $timeForCode = floor($time->getTimestamp() / $this->codePeriod);
+            $timeForCode = floor($time->getTimestamp() / $this->periodSize);
         } else {
             @trigger_error(
                 'Passing anything other than null or a DateTimeInterface to $time is deprecated as of 2.0 '.
