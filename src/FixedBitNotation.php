@@ -154,9 +154,9 @@ final class FixedBitNotation
                         // $bitsPerCharacter and 8, divided by 8
                         $lcmMap = [1 => 1, 2 => 1, 3 => 3, 4 => 1, 5 => 5, 6 => 3, 7 => 7, 8 => 1];
                         $bytesPerGroup = $lcmMap[$bitsPerCharacter];
-                        $pads = $bytesPerGroup * 8 / $bitsPerCharacter
+                        $pads = (int) ($bytesPerGroup * 8 / $bitsPerCharacter
                         - ceil((\strlen($rawString) % $bytesPerGroup)
-                        * 8 / $bitsPerCharacter);
+                        * 8 / $bitsPerCharacter));
                         $encodedString .= str_repeat($padCharacter[0], $pads);
                     }
 
