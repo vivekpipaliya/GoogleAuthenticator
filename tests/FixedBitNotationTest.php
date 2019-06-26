@@ -54,6 +54,18 @@ class FixedBitNotationTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Test with padding.
+     *
+     * @dataProvider decodeIsSameAsEncode
+     */
+    public function testDecodeIsSameAsEncodeWithPadding($input): void
+    {
+        $bits = new FixedBitNotation(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', true, true);
+
+        $this->assertSame((string) $input, $bits->decode($bits->encode($input)));
+    }
+
+    /**
      * Every single value in here should be equal to the returned string value.
      *
      * @return array
