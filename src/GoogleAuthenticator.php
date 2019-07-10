@@ -48,11 +48,6 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
      */
     private $periodSize = 30;
 
-    /**
-     * @param int                     $passCodeLength
-     * @param int                     $secretLength
-     * @param \DateTimeInterface|null $instanceTime
-     */
     public function __construct(int $passCodeLength = 6, int $secretLength = 10, \DateTimeInterface $instanceTime = null, int $codePeriod = 30)
     {
         /*
@@ -173,10 +168,6 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
             ->encode(random_bytes($this->secretLength));
     }
 
-    /**
-     * @param string $bytes
-     * @param int    $start
-     */
     private function hashToInt(string $bytes, int $start): int
     {
         return unpack('N', substr(substr($bytes, $start), 0, 4))[1];

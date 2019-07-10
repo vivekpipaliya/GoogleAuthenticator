@@ -30,8 +30,6 @@ class FixedBitNotationTest extends \PHPUnit\Framework\TestCase
     /**
      * All returned values in here should result in decoding into an empty
      * string.
-     *
-     * @return array
      */
     public static function decodeGuardData(): array
     {
@@ -67,8 +65,6 @@ class FixedBitNotationTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Every single value in here should be equal to the returned string value.
-     *
-     * @return array
      */
     public static function decodeIsSameAsEncode(): array
     {

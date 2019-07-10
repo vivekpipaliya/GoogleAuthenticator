@@ -55,8 +55,6 @@ final class GoogleQrUrl
      * @param string      $secret      The secret is the generated secret unique to that user
      * @param string|null $issuer      Where you log in to
      * @param int         $size        Image size in pixels, 200 will make it 200x200
-     *
-     * @return string
      */
     public static function generate(string $accountName, string $secret, string $issuer = null, int $size = 200): string
     {
