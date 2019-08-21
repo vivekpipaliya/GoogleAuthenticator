@@ -75,7 +75,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
          * Discrepancy is the factor of periodSize ($discrepancy * $periodSize) allowed on either side of the
          * given codePeriod. For example, if a code with codePeriod = 60 is generated at 10:00:00, a discrepancy
          * of 1 will allow a periodSize of 30 seconds on either side of the codePeriod resulting in a valid code
-         * from 09:59:30 to 10:01:29.
+         * from 09:59:30 to 10:00:29.
          *
          * The result of each comparison is stored as a timestamp here instead of using a guard clause
          * (https://refactoring.com/catalog/replaceNestedConditionalWithGuardClauses.html). This is to implement
