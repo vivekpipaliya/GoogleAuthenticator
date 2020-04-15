@@ -48,7 +48,7 @@ final class GoogleAuthenticator implements GoogleAuthenticatorInterface
      */
     private $periodSize = 30;
 
-    public function __construct(int $passCodeLength = 6, int $secretLength = 10, \DateTimeInterface $instanceTime = null, int $codePeriod = 30)
+    public function __construct(int $passCodeLength = 6, int $secretLength = 10, ?\DateTimeInterface $instanceTime = null, int $codePeriod = 30)
     {
         /*
          * codePeriod is the duration in seconds that the code is valid.
