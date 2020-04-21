@@ -22,7 +22,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
      */
     protected $helper;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->helper = new GoogleAuthenticator();
     }
