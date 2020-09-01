@@ -20,18 +20,10 @@ Branch | Github Actions | Coverage |
 3.x    | [![Test][test_stable_badge]][test_stable_link]     | [![Coverage Status][coverage_stable_badge]][coverage_stable_link]     |
 master | [![Test][test_unstable_badge]][test_unstable_link] | [![Coverage Status][coverage_unstable_badge]][coverage_unstable_link] |
 
-### Installation using Composer
-
-Add the dependency:
+## Installation using Composer
 
 ```bash
-php composer.phar require sonata-project/google-authenticator
-```
-
-If asked for a version, type in 'dev-master' (unless you want another version):
-
-```bash
-Please provide a version constraint for the sonata-project/google-authenticator requirement: dev-master
+composer require sonata-project/google-authenticator
 ```
 
 ## Usage
