@@ -143,7 +143,7 @@ class User
         $daysUntilInvalid = 0;
         $time = (string) floor((time() / (3600 * 24))); // get day number
         if (isset($_COOKIE['otp'])) {
-            list($otpday, $hash) = explode(':', $_COOKIE['otp']);
+            [$otpday, $hash] = explode(':', $_COOKIE['otp']);
 
             if ($otpday >= $time - $daysUntilInvalid && $hash === hash_hmac('sha1', $this->getUsername().':'.$otpday.':'.$_SERVER['HTTP_USER_AGENT'], $this->getSecret())) {
                 return true;
