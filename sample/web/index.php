@@ -65,7 +65,7 @@ if ($username = $users->hasSession()) {
             include __DIR__.'/../tmpl/login.php';
         }
     }
-    die();
+    exit();
 }
     //if the username is set in _POST, then we assume the user filled in the login form.
 
@@ -101,14 +101,14 @@ if ($username = $users->hasSession()) {
                     }
                 }
 
-                die();
+                exit();
             }
         }
         // if we're here, something went wrong, destroy the session and show a login error
         session_destroy();
 
         include __DIR__.'/../tmpl/login-error.php';
-        die();
+        exit();
     }
 
 // if neither a session nor tried to submit the login credentials -> login screen
