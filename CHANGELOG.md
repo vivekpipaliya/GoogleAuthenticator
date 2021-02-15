@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.3.1](https://github.com/sonata-project/GoogleAuthenticator/compare/2.3.0...2.3.1) - 2021-02-15
+### Fixed
+- [[#251](https://github.com/sonata-project/GoogleAuthenticator/pull/251)] Php version constraint ([@franmomu](https://github.com/franmomu))
+
 ## [2.3.0](https://github.com/sonata-project/GoogleAuthenticator/compare/2.2.0...2.3.0) - 2020-12-16
 ### Added
 - Added Php 8 support
