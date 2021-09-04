@@ -29,7 +29,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
 
     public function testGenerateSecret(): void
     {
-        $this->assertSame(
+        static::assertSame(
             16,
             \strlen($this->helper->generateSecret())
         );
@@ -43,7 +43,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
     public function testCheckCodeWithLegacyArguments($expectation, $inputDate): void
     {
         $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 30);
-        $this->assertSame(
+        static::assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', strtotime($inputDate) / 30))
         );
@@ -57,7 +57,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
         $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 30);
 
         $datetime = new \DateTime($inputDate);
-        $this->assertSame(
+        static::assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime))
         );
@@ -71,7 +71,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
         $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 30);
 
         $datetime = new \DateTime($inputDate);
-        $this->assertSame(
+        static::assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime), 0)
         );
@@ -85,7 +85,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
         $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 300);
 
         $datetime = new \DateTime($inputDate);
-        $this->assertSame(
+        static::assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime))
         );
@@ -99,7 +99,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
         $authenticator = new GoogleAuthenticator(6, 10, new \DateTime('2012-03-17 22:17:00'), 300);
 
         $datetime = new \DateTime($inputDate);
-        $this->assertSame(
+        static::assertSame(
             $expectation,
             $authenticator->checkCode('3DHTQX4GCRKHGS55CJ', $authenticator->getCode('3DHTQX4GCRKHGS55CJ', $datetime), 0)
         );
@@ -158,7 +158,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
         $authenticator = new GoogleAuthenticator(8, 10, new \DateTime('2012-03-17 22:17:00'), 30);
 
         for ($a = 0; $a < 1000; ++$a) {
-            $this->assertSame(8, \strlen($authenticator->getCode($authenticator->generateSecret())));
+            static::assertSame(8, \strlen($authenticator->getCode($authenticator->generateSecret())));
         }
     }
 
@@ -168,7 +168,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetUrlIssuer(): void
     {
-        $this->assertSame(
+        static::assertSame(
             'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=otpauth%3A%2F%2Ftotp%2Ffoo%40foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ&ecc=M%26issuer%3DFooBar',
             $this->helper->getUrl('foo', 'foobar.org', '3DHTQX4GCRKHGS55CJ', 'FooBar')
         );
@@ -180,7 +180,7 @@ class GoogleAuthenticatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetUrlNoIssuer(): void
     {
-        $this->assertSame(
+        static::assertSame(
             'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=otpauth%3A%2F%2Ftotp%2Ffoo%40foobar.org%3Fsecret%3D3DHTQX4GCRKHGS55CJ&ecc=M',
             $this->helper->getUrl('foo', 'foobar.org', '3DHTQX4GCRKHGS55CJ')
         );

@@ -24,7 +24,7 @@ class FixedBitNotationTest extends \PHPUnit\Framework\TestCase
     {
         $bits = new FixedBitNotation(5);
 
-        $this->assertSame('', $bits->decode($input));
+        static::assertSame('', $bits->decode($input));
     }
 
     /**
@@ -48,7 +48,7 @@ class FixedBitNotationTest extends \PHPUnit\Framework\TestCase
     {
         $bits = new FixedBitNotation(5);
 
-        $this->assertSame((string) $input, $bits->decode($bits->encode($input)));
+        static::assertSame((string) $input, $bits->decode($bits->encode($input)));
     }
 
     /**
@@ -60,7 +60,7 @@ class FixedBitNotationTest extends \PHPUnit\Framework\TestCase
     {
         $bits = new FixedBitNotation(5, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', true, true);
 
-        $this->assertSame((string) $input, $bits->decode($bits->encode($input)));
+        static::assertSame((string) $input, $bits->decode($bits->encode($input)));
     }
 
     /**
