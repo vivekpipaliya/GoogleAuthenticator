@@ -18,7 +18,7 @@ PHP app (Of course, you can also create them with this).
 Branch | Github Actions | Coverage |
 ------ | -------------- | -------- |
 2.x    | [![Test][test_stable_badge]][test_stable_link]     | [![Coverage Status][coverage_stable_badge]][coverage_stable_link]     |
-3.x.   | [![Test][test_unstable_badge]][test_unstable_link] | [![Coverage Status][coverage_unstable_badge]][coverage_unstable_link] |
+3.x    | [![Test][test_unstable_badge]][test_unstable_link] | [![Coverage Status][coverage_unstable_badge]][coverage_unstable_link] |
 
 ## Installation using Composer
 
