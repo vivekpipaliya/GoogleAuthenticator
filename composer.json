@@ -3,7 +3,6 @@
     "description": "Library to integrate Google Authenticator into a PHP project",
     "license": "MIT",
     "type": "library",
-    "abandoned": true,
     "keywords": [
         "google authenticator"
     ],
